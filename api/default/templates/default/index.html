@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<form method="post">
+  {% csrf_token %}
+  <input type="number" name="value" required>
+  <button type="submit">Somar</button>
+</form>
+
+{% if task_id %}
+<p>Tarefa enviada. ID: {{ task_id }}</p>
+{% endif %}
+
+<div id="result">
+  {% if result %}
+    Resultado: {{ result }}
+  {% endif %}
+</div>
+<script>
+  async function checkStatus(taskId) {
+    const url = `task_status?task_id=${taskId}`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.state === 'SUCCESS') {
+        document.getElementById("result").textContent = "Resultado: " + data.result;
+      } else {
+        // Repetir a cada 1 segundo até que termine
+        setTimeout(() => checkStatus(taskId), 1000);
+      }
+    } catch (err) {
+      console.error("Erro ao verificar status", err);
+    }
+  }
+
+  // Executa após o form enviar
+  document.addEventListener("DOMContentLoaded", () => {
+    const taskId = "{{ task_id|default:'' }}";
+    if (taskId) {
+      checkStatus(taskId);
+    }
+  });
+</script>
+</body>
+</html>

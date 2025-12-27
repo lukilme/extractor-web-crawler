@@ -5,19 +5,28 @@ import uuid
 import tempfile
 import shutil
 import subprocess
-
+from celery import shared_task
+import requests
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://mongo:27017")
 client_mongo = MongoClient(MONGO_URL)
 db = client_mongo["appdb"]
 scripts = db["scripts"]
 
-celery = Celery("app")
+celery = Celery("task",
+    broker="redis://redis:6379/0",
+    backend="redis://redis:6379/0",
+)
 celery.conf.update(
     broker_url=os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0"),
     result_backend=os.getenv("CELERY_RESULT_BACKEND", "redis://redis:6379/0"),
     task_serializer="json",
     accept_content=["json"],
 )
+
+@celery.task(bind=True)
+def say_hello(self):
+    print("Hello, world!")
+    return "okok"
 
 @celery.task(bind=True)
 def run_script_task(self, script_id, params=None):
@@ -63,3 +72,22 @@ def run_script_task(self, script_id, params=None):
 
     finally:
         shutil.rmtree(workdir, ignore_errors=True)
+
+@shared_task(name="task.sum_via_nlp")
+def sum_via_nlp(value):
+    import logging
+    logging.info(f"Calling NLP with: {value}")
+
+    resp = requests.post(
+        "http://nlp-gateway:8100/sum",
+        json={"value": value},
+        timeout=10
+    )
+    logging.info(f"NLP status: {resp.status_code}, body: {resp.text}")
+
+    resp.raise_for_status()
+    result = resp.json().get("result")
+    logging.info(f"NLP result: {result}")
+
+    return result
+

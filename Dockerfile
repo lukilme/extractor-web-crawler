@@ -9,16 +9,9 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# copia o requirements gerado pelo poetry export
 COPY ./api/requirements.txt /app/requirements.txt
 
 RUN pip install --upgrade pip \
  && pip install --no-cache-dir -r /app/requirements.txt
 
-# copia código
 COPY ./api /app
-
-EXPOSE 8000
-
-
-CMD ["bash", "-lc", "celery -A project_name beat --loglevel=info"]

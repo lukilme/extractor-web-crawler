@@ -61,7 +61,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["celery", "-A", "task", "worker", "--loglevel=info"]
+    command: ["celery", "-A", "extractor", "worker", "--loglevel=info"]
+
     working_dir: /app
     volumes:
       - ./api:/app
@@ -78,7 +79,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["celery", "-A", "task", "beat", "--loglevel=info"]
+    command: ["celery", "-A", "extractor", "beat", "--loglevel=info"]
     volumes:
       - ./api:/app
     env_file: .env
@@ -90,11 +91,16 @@ services:
 
   nlp-gateway:
     build:
-      context: ./nlp-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./nlp-gateway/Dockerfile
     env_file: .env
+    volumes:
+      - ./nlp-gateway:/app    
     ports:
       - "8100:8100"
+    environment:
+      OLLAMA_HOST: http://localhost:11434
+      OLLAMA_MODEL: phi3:3.8b
     depends_on:
       - api
     extra_hosts:

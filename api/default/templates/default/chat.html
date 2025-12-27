@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Chat NLP</title>
+    <style>
+        body { font-family: monospace; margin: 20px; }
+        textarea { width: 100%; height: 80px; }
+        pre {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        button { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<h3>Pergunta</h3>
+
+<textarea id="question"></textarea>
+<br>
+<button onclick="send()">Enviar</button>
+
+<h3>Resposta</h3>
+<pre id="output"></pre>
+
+<script>
+function send() {
+    const q = document.getElementById("question").value;
+    const out = document.getElementById("output");
+
+    out.textContent = "";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "/stream/?q=" + encodeURIComponent(q), true);
+
+    xhr.onprogress = function () {
+        out.textContent = xhr.responseText;
+        out.scrollTop = out.scrollHeight;
+    };
+
+    xhr.send();
+}
+</script>
+
+</body>
+</html>

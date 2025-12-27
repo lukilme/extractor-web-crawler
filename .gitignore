@@ -2,3 +2,4 @@
 mongo/*
 postgres/*
 .venv-nlp
+.env
