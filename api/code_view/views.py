@@ -4,6 +4,7 @@ from .service import CodeService
 
 BASE_DIR = Path(__file__).resolve().parent
 
+
 def editor(request):
     if request.method == "POST":
         code = request.POST.get("code", "")

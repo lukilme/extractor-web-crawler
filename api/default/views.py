@@ -4,16 +4,18 @@ from celery.result import AsyncResult
 from django.http import JsonResponse, StreamingHttpResponse
 import requests
 
+
 def task_status(request):
     task_id = request.GET.get("task_id")
     if not task_id:
         return JsonResponse({"error": "task_id is required"}, status=400)
 
     result = AsyncResult(task_id)
-    return JsonResponse({
-        "state": result.state,
-        "result": result.result if result.ready() else None
-    })
+    return JsonResponse(
+        {"state": result.state, "result": result.result if result.ready() else None}
+    )
+
+
 def index(request):
     context = {}
 

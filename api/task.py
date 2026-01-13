@@ -7,12 +7,14 @@ import shutil
 import subprocess
 from celery import shared_task
 import requests
+
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://mongo:27017")
 client_mongo = MongoClient(MONGO_URL)
 db = client_mongo["appdb"]
 scripts = db["scripts"]
 
-celery = Celery("task",
+celery = Celery(
+    "task",
     broker="redis://redis:6379/0",
     backend="redis://redis:6379/0",
 )
@@ -23,10 +25,12 @@ celery.conf.update(
     accept_content=["json"],
 )
 
+
 @celery.task(bind=True)
 def say_hello(self):
     print("Hello, world!")
     return "okok"
+
 
 @celery.task(bind=True)
 def run_script_task(self, script_id, params=None):
@@ -43,29 +47,34 @@ def run_script_task(self, script_id, params=None):
             f.write(code)
 
         cmd = [
-            "docker", "run", "--rm",
-            "--network", "none",
-            "--memory", "256m",
-            "--cpus", "0.5",
-            "-v", f"{workdir}:/work:ro",
-            "-w", "/work",
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "--memory",
+            "256m",
+            "--cpus",
+            "0.5",
+            "-v",
+            f"{workdir}:/work:ro",
+            "-w",
+            "/work",
             "python:3.11-slim",
-            "timeout", "30s", "python", "script.py"
+            "timeout",
+            "30s",
+            "python",
+            "script.py",
         ]
 
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=40
-        )
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=40)
 
         logs = (result.stdout or "") + (result.stderr or "")
         exit_code = result.returncode
 
         scripts.update_one(
             {"_id": script_id},
-            {"$set": {"last_run": {"exit_code": exit_code, "logs": logs}}}
+            {"$set": {"last_run": {"exit_code": exit_code, "logs": logs}}},
         )
 
         return {"exit_code": exit_code, "logs": logs}
@@ -73,15 +82,15 @@ def run_script_task(self, script_id, params=None):
     finally:
         shutil.rmtree(workdir, ignore_errors=True)
 
+
 @shared_task(name="task.sum_via_nlp")
 def sum_via_nlp(value):
     import logging
+
     logging.info(f"Calling NLP with: {value}")
 
     resp = requests.post(
-        "http://nlp-gateway:8100/sum",
-        json={"value": value},
-        timeout=10
+        "http://nlp-gateway:8100/sum", json={"value": value}, timeout=10
     )
     logging.info(f"NLP status: {resp.status_code}, body: {resp.text}")
 
@@ -90,4 +99,3 @@ def sum_via_nlp(value):
     logging.info(f"NLP result: {result}")
 
     return result
-
