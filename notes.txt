@@ -1,0 +1,13 @@
+lint:
+  stage: lint
+  script:
+    - echo "Running format & lint checks"
+    - pip install black mypy ruff
+    # Black check only (não altera código)
+    # - black --check .
+    # # Ruff com auto-fix
+    # - ruff check . --fix
+    # # Mypy type checking
+    # - mypy .
+  # opcional: falhar se houver warnings
+  allow_failure: true
