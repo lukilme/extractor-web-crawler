@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "shared_templates",
     "scrapper",
     "default",
     "code_view",
@@ -58,7 +59,7 @@ ROOT_URLCONF = "extractor.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'shared_templates/templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            {% block sidebar %}
+                {% include 'components/sidebar.html' %}
+            {% endblock %}
+        </aside>
+        
+        <main class="main-content">
+            {% block main_content %}{% endblock %}
+        </main>
+    </div>
+{% endblock %}
