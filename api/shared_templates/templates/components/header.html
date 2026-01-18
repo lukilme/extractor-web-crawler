@@ -1,1 +1,630 @@
-<h2>Header</h2>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos brutais adicionais */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+        .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .font-ibm-mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .brutal-border {
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        .brutal-border-thin {
+            border: 2px solid #000;
+        }
+
+        .brutal-shadow {
+            box-shadow: 6px 6px 0px #000;
+        }
+
+        .brutal-hover:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        .brutal-transition {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Menu mobile */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        /* Breakpoint MD específico (768px-1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .md-logo-text {
+                font-size: 1.9rem !important;
+            }
+
+            .md-nav-text {
+                font-size: 0.85rem !important;
+                padding-left: 0.6rem !important;
+                padding-right: 0.6rem !important;
+            }
+
+            .md-search-width {
+                width: 180px !important;
+            }
+
+            .md-date-box {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+
+            .md-hide-tagline {
+                display: none !important;
+            }
+
+            .md-nav-container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+
+            .md-headline-text {
+                font-size: 0.9rem !important;
+            }
+
+            .md-topbar-text {
+                font-size: 0.7rem !important;
+            }
+
+            .md-flex-wrap {
+                flex-wrap: wrap !important;
+                gap: 0.5rem !important;
+            }
+
+            .md-justify-center {
+                justify-content: center !important;
+            }
+        }
+
+        /* Ajustes para telas muito pequenas */
+        @media (max-width: 360px) {
+            .text-adaptive {
+                font-size: 0.75rem;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-space-grotesk">
+    <!-- Header principal -->
+    <header class="sticky top-0 z-50">
+        <!-- Barra superior - Otimizada para MD -->
+        <div class="bg-black text-white py-2 px-2 sm:px-3 md:px-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <div
+                    class="text-xs md-topbar-text font-ibm-mono flex items-center space-x-1 sm:space-x-2 md:space-x-3 overflow-hidden">
+                    <span class="text-yellow-400 whitespace-nowrap"><i class="fas fa-circle text-xs mr-1"></i> AO
+                        VIVO</span>
+                    <span class="truncate hidden sm:inline md:inline">ÚLTIMAS: <span class="text-yellow-400">Eleições
+                            2024: novas pesquisas</span></span>
+                    <span class="truncate sm:hidden text-xs">Eleições 2024</span>
+                </div>
+                <div class="text-xs md-topbar-text font-ibm-mono flex items-center space-x-2 sm:space-x-3 md:space-x-4">
+                    <a href="#" class="hover:text-yellow-400 whitespace-nowrap">ASSINE</a>
+                    <span class="hidden sm:inline md:inline">|</span>
+                    <a href="#" class="hidden md:inline hover:text-yellow-400 whitespace-nowrap">ACESSO</a>
+                    <span class="hidden md:inline">|</span>
+                    <a href="#" class="hidden sm:inline hover:text-yellow-400 whitespace-nowrap">CONTATO</a>
+                    <a href="#" class="sm:hidden hover:text-yellow-400"><i class="fas fa-ellipsis-h"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header principal - Otimizado para MD -->
+        <div class="bg-white border-b-4 border-black px-3 sm:px-4 md:px-5 py-3 sm:py-4">
+            <div class="container mx-auto">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center md:items-start lg:items-center">
+                    <!-- Logo -->
+                    <div class="mb-3 sm:mb-0 w-full sm:w-auto flex justify-between items-center md:block">
+                        <div class="flex items-center">
+                            <div class="bg-black text-white p-2 sm:p-3 mr-2 sm:mr-3 brutal-shadow">
+                                <i class="fas fa-newspaper text-xl sm:text-2xl md:text-2xl"></i>
+                            </div>
+                            <div>
+                                <h1
+                                    class="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-black tracking-tighter md-logo-text">
+                                    NOTÍCIAS<span class="text-red-600">BRUTAIS</span></h1>
+                                <p class="font-ibm-mono text-xs tracking-widest mt-1 md-hide-tagline">A VERDADE SEM
+                                    DECORAÇÃO</p>
+                                <p class="font-ibm-mono text-xs tracking-widest mt-1 sm:hidden">VERDADE BRUTA</p>
+                            </div>
+                        </div>
+
+                        <!-- Menu mobile toggle -->
+                        <button id="mobile-menu-toggle" class="sm:hidden bg-black text-white p-2 brutal-border-thin">
+                            <i class="fas fa-bars text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Data e horário - Otimizado para MD -->
+                    <div class="text-center mb-3 sm:mb-0 w-full sm:w-auto md:mt-1 lg:mt-0">
+                        <div
+                            class="font-ibm-mono bg-gray-900 text-white py-2 px-3 sm:px-4 md-date-box brutal-shadow inline-block">
+                            <div class="text-lg sm:text-xl md:text-lg lg:text-xl font-bold" id="current-date">14 JAN
+                                2026</div>
+                            <div class="text-xs sm:text-sm md:text-xs lg:text-sm" id="current-time">QUARTA • 14:30</div>
+                        </div>
+                    </div>
+
+                    <!-- Busca e ações - Otimizado para MD -->
+                    <div class="hidden sm:flex items-center space-x-2 md:space-x-3 mt-1 md:mt-0">
+                        <div class="relative">
+                            <input type="text" placeholder="BUSCAR..."
+                                class="bg-gray-100 brutal-border-thin py-2 pl-4 pr-10 w-48 md-search-width lg:w-64 focus:outline-none focus:ring-2 focus:ring-black font-ibm-mono text-sm">
+                            <button class="absolute right-2 top-8 transform -translate-y-1/2 text-black">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <button
+                            class="bg-black text-white p-2 md:p-3 brutal-border-thin brutal-hover brutal-transition hidden lg:block">
+                            <i class="fas fa-user text-xl"></i>
+                        </button>
+                        <button
+                            class="bg-black text-white p-2 md:p-3 brutal-border-thin brutal-hover brutal-transition lg:hidden"
+                            title="Menu">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Busca mobile -->
+                <div class="mt-3 sm:hidden">
+                    <div class="relative">
+                        <input type="text" placeholder="BUSCAR NOTÍCIAS..."
+                            class="bg-gray-100 brutal-border-thin py-2 pl-4 pr-10 w-full focus:outline-none focus:ring-2 focus:ring-black font-ibm-mono">
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-black">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegação - Otimizada para MD -->
+        <nav class="bg-black text-white py-3 hidden sm:block">
+            <div class="container mx-auto md-nav-container">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div
+                        class="flex md-flex-wrap md-justify-center gap-1 md:gap-1 lg:gap-0 lg:space-x-1 mb-3 md:mb-2 lg:mb-0">
+                        <a href="#"
+                            class="bg-red-600 text-white font-bold px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover whitespace-nowrap">PRIMEIRA</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap">POLÍTICA</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap">ECONOMIA</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap">MUNDO</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap">TECNOLOGIA</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap">ESPORTES</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap">CULTURA</a>
+                        <a href="#"
+                            class="bg-gray-800 text-white px-3 py-2 text-sm md-nav-text brutal-transition brutal-hover hover:bg-gray-700 whitespace-nowrap hidden lg:inline">SAÚDE</a>
+                    </div>
+
+                    <div class="flex justify-center items-center gap-3 md:gap-4">
+                        <a href="#"
+                            class="text-yellow-400 hover:text-yellow-300 text-sm md:text-base m-0 p-0 inline-flex pointer">
+                            <i class="fab fa-twitter m-0"></i>
+                        </a>
+                        <a href="#"
+                            class="text-yellow-400 hover:text-yellow-300 text-sm md:text-base m-0 p-0 inline-flex pointer">
+                            <i class="fab fa-facebook-f m-0"></i>
+                        </a>
+                        <a href="#"
+                            class="text-yellow-400 hover:text-yellow-300 text-sm md:text-base hidden md:inline-flex pointer m-0 p-0">
+                            <i class="fab fa-instagram m-0"></i>
+                        </a>
+                        <a href="#"
+                            class="text-yellow-400 hover:text-yellow-300 text-sm md:text-base hidden md:inline-flex m-0 p-0 pointer">
+                            <i class="fab fa-youtube m-0"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="mobile-menu bg-black text-white sm:hidden">
+            <div class="container mx-auto px-4 py-3">
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="#"
+                        class="bg-red-600 text-white font-bold px-3 py-3 text-center brutal-transition">PRIMEIRA</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">POLÍTICA</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">ECONOMIA</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">MUNDO</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">TECNOLOGIA</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">ESPORTES</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">CULTURA</a>
+                    <a href="#"
+                        class="bg-gray-800 text-white px-3 py-3 text-center brutal-transition hover:bg-gray-700">SAÚDE</a>
+                </div>
+
+                <div class="flex justify-center space-x-6 mt-4 pt-4 border-t border-gray-700">
+                    <a href="#" class="text-yellow-400 hover:text-yellow-300 text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-yellow-400 hover:text-yellow-300 text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-yellow-400 hover:text-yellow-300 text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-yellow-400 hover:text-yellow-300 text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+
+                <div class="mt-4 text-center text-sm text-gray-300">
+                    <a href="#" class="block py-2 border-b border-gray-700">ASSINAR</a>
+                    <a href="#" class="block py-2 border-b border-gray-700">CONTATO</a>
+                    <a href="#" class="block py-2">CONFIGURAÇÕES</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Destaque de manchete - Otimizado para MD -->
+        <div class="bg-yellow-400 py-2 px-3 sm:py-2 md:py-2 sm:px-4">
+            <div class="container mx-auto">
+                <div class="flex items-center">
+                    <div
+                        class="bg-black text-white px-2 py-1 mr-2 sm:mr-3 md:mr-2 font-bold font-ibm-mono text-sm sm:text-base whitespace-nowrap">
+                        DESTAQUE</div>
+                    <div class="overflow-hidden flex-1">
+                        <div class="hidden sm:block">
+                            <marquee behavior="scroll" direction="left" class="font-bold text-sm md-headline-text">
+                                • NOVO IMPOSTO SOBRE STREAMING +15% • PREFEITO ANUNCIA MOBILIDADE URBANA • CONFIANÇA DO
+                                CONSUMIDOR AUMENTA • TEMPESTADE NO LITORAL SUL • MERCADO EM ALTA
+                            </marquee>
+                        </div>
+                        <div class="sm:hidden font-bold text-xs">
+                            <span id="mobile-headline" class="whitespace-nowrap">NOVO IMPOSTO STREAMING +15% •
+                                MOBILIDADE URBANA • CONFIANÇA ↑</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo de exemplo com foco em MD -->
+    <main class="container mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 mt-4 sm:mt-6 md:mt-8">
+        <!-- Indicador de tamanho de tela (apenas para demonstração) -->
+        <div
+            class="mb-6 p-3 bg-gradient-to-r from-black to-gray-800 text-white text-center text-sm font-ibm-mono brutal-shadow">
+            <div class="sm:hidden">TAMANHO DE TELA: <span class="text-yellow-400">MOBILE</span> (< 640px)</div>
+                    <div class="hidden sm:block md:hidden">TAMANHO DE TELA: <span class="text-yellow-400">SM</span>
+                        (640px-767px)</div>
+                    <div class="hidden md:block lg:hidden">TAMANHO DE TELA: <span
+                            class="text-red-400 font-bold">MD</span> (768px-1023px) <span class="text-yellow-300">-
+                            OTIMIZADO!</span></div>
+                    <div class="hidden lg:block xl:hidden">TAMANHO DE TELA: <span class="text-yellow-400">LG</span>
+                        (1024px-1279px)</div>
+                    <div class="hidden xl:block">TAMANHO DE TELA: <span class="text-yellow-400">XL</span> (≥ 1280px)
+                    </div>
+            </div>
+
+            <div class="bg-white brutal-border p-4 sm:p-6 md:p-6">
+                <h2 class="text-2xl sm:text-3xl md:text-3xl font-black mb-6 text-center md:text-left">HEADER OTIMIZADO
+                    PARA MD</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+                    <div class="bg-gray-100 p-4 brutal-border-thin">
+                        <div class="bg-black text-white p-2 text-center font-bold mb-3">ANTES (MD)</div>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li>Logo muito grande para o espaço</li>
+                            <li>Navegação com texto muito longo</li>
+                            <li>Campo de busca muito largo</li>
+                            <li>Itens da barra superior desalinhados</li>
+                            <li>Espaçamentos inconsistentes</li>
+                            <li>Falta de hierarquia visual</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-black text-white p-4 brutal-border-thin">
+                        <div class="bg-yellow-400 text-black p-2 text-center font-bold mb-3">AGORA (MD)</div>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li>Logo com tamanho proporcional</li>
+                            <li>Navegação com texto compacto</li>
+                            <li>Campo de busca com largura ajustada</li>
+                            <li>Barra superior com fonte menor</li>
+                            <li>Espaçamentos otimizados</li>
+                            <li>Hierarquia visual clara</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-100 p-4 brutal-border-thin">
+                        <div class="bg-red-600 text-white p-2 text-center font-bold mb-3">MELHORIAS</div>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li><strong>Classes MD específicas</strong> no CSS</li>
+                            <li><strong>Flex-wrap</strong> na navegação</li>
+                            <li><strong>Texto mais compacto</strong> nos botões</li>
+                            <li><strong>Padding ajustado</strong> para todos elementos</li>
+                            <li><strong>Ocultação inteligente</strong> de elementos</li>
+                            <li><strong>Layout mais limpo</strong> e organizado</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="font-bold text-xl mb-4 text-center md:text-left">AJUSTES ESPECÍFICOS PARA MD (768px-1024px):
+                </h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse border border-gray-800">
+                        <thead>
+                            <tr class="bg-black text-white">
+                                <th class="border border-gray-700 p-3 text-left">Elemento</th>
+                                <th class="border border-gray-700 p-3 text-left">Problema Anterior</th>
+                                <th class="border border-gray-700 p-3 text-left">Solução Aplicada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 p-3 font-bold">Logo</td>
+                                <td class="border border-gray-300 p-3">Muito grande (text-4xl), ocupava espaço vertical
+                                    excessivo</td>
+                                <td class="border border-gray-300 p-3">Reduzido para <code
+                                        class="bg-gray-200 px-1">md:text-3xl</code> e ajustada a tagline</td>
+                            </tr>
+                            <tr class="bg-white">
+                                <td class="border border-gray-300 p-3 font-bold">Navegação</td>
+                                <td class="border border-gray-300 p-3">Itens muito largos, quebravam linha ou ficavam
+                                    apertados</td>
+                                <td class="border border-gray-300 p-3">Texto mais compacto, padding reduzido, flex-wrap
+                                    ativado</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 p-3 font-bold">Campo de busca</td>
+                                <td class="border border-gray-300 p-3">Muito largo (w-64), empurrava outros elementos
+                                </td>
+                                <td class="border border-gray-300 p-3">Largura reduzida para <code
+                                        class="bg-gray-200 px-1">180px</code> em MD</td>
+                            </tr>
+                            <tr class="bg-white">
+                                <td class="border border-gray-300 p-3 font-bold">Data/Hora</td>
+                                <td class="border border-gray-300 p-3">Caixa muito larga, desbalanceava o layout</td>
+                                <td class="border border-gray-300 p-3">Padding reduzido, fonte ajustada, alinhamento
+                                    melhorado</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-300 p-3 font-bold">Barra superior</td>
+                                <td class="border border-gray-300 p-3">Texto muito grande para o espaço disponível</td>
+                                <td class="border border-gray-300 p-3">Fonte reduzida, espaçamento entre itens ajustado
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-8 p-4 bg-gradient-to-r from-gray-900 to-black text-white brutal-shadow">
+                    <p class="font-ibm-mono text-center text-sm md:text-base">HEADER BRUTALISTA COM OTIMIZAÇÃO
+                        ESPECÍFICA PARA DISPOSITIVOS MD (TABLETS)</p>
+                </div>
+            </div>
+
+            <!-- Exemplos visuais do layout MD -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-4 brutal-border-thin">
+                    <h4 class="font-bold mb-3 text-lg">Layout MD - Antes</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="bg-gray-800 text-white p-2 text-center">LOGO MUITO GRANDE</div>
+                        <div class="flex justify-between">
+                            <div class="bg-gray-300 p-2 w-1/3">Data</div>
+                            <div class="bg-gray-300 p-2 w-2/3">Campo busca muito largo</div>
+                        </div>
+                        <div class="bg-gray-800 text-white p-1 text-center overflow-hidden whitespace-nowrap">
+                            <span class="text-xs">POLÍTICA • ECONOMIA • MUNDO • TECNOLOGIA • ESPORTES • CULTURA</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mt-2">Problema: Elementos desproporcionais, falta de espaço
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 brutal-border-thin">
+                    <h4 class="font-bold mb-3 text-lg">Layout MD - Agora</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center">
+                            <div class="bg-black text-white p-2 text-center text-sm">LOGO AJUSTADO</div>
+                            <div class="bg-gray-900 text-white p-1 px-2 text-xs">Data/Hora</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="bg-gray-300 p-1 px-2 w-40">Busca compacta</div>
+                            <div class="bg-black text-white p-2">...</div>
+                        </div>
+                        <div class="bg-gray-800 text-white p-1 text-center flex flex-wrap justify-center gap-1 mt-2">
+                            <span class="bg-red-600 px-1 text-xs">PRIMEIRA</span>
+                            <span class="bg-gray-700 px-1 text-xs">POLÍTICA</span>
+                            <span class="bg-gray-700 px-1 text-xs">ECONOMIA</span>
+                            <span class="bg-gray-700 px-1 text-xs">MUNDO</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mt-2">Melhoria: Proporções equilibradas, uso eficiente do
+                            espaço</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instruções para testar -->
+            <div class="mt-8 p-4 bg-yellow-100 brutal-border-thin">
+                <h4 class="font-bold mb-2">Como testar a otimização MD:</h4>
+                <ol class="list-decimal pl-5 text-sm space-y-1">
+                    <li>Redimensione a janela para entre <strong>768px e 1024px</strong> de largura</li>
+                    <li>Compare com o comportamento em outros tamanhos de tela</li>
+                    <li>Observe as diferenças no tamanho da logo, navegação e campo de busca</li>
+                    <li>Verifique como os elementos se reorganizam no espaço disponível</li>
+                    <li>Teste em um tablet real ou emulador para validação final</li>
+                </ol>
+            </div>
+    </main>
+
+    <script>
+        // Atualizar data e hora
+        function updateDateTime() {
+            const now = new Date();
+
+            // Formatar data
+            const optionsDate = { day: 'numeric', month: 'short', year: 'numeric' };
+            const dateStr = now.toLocaleDateString('pt-BR', optionsDate).toUpperCase();
+            document.getElementById('current-date').textContent = dateStr;
+
+            // Formatar dia da semana e hora
+            const daysShort = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
+            const daysFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
+            const dayShort = daysShort[now.getDay()];
+            const dayFull = daysFull[now.getDay()];
+            const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            // Aplicar baseado no tamanho da tela
+            const timeElement = document.getElementById('current-time');
+            if (window.innerWidth < 640) {
+                timeElement.textContent = `${dayShort} • ${timeStr}`;
+            } else if (window.innerWidth < 1024) {
+                // Para MD, usar formato médio
+                const daysMedium = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
+                timeElement.textContent = `${daysMedium[now.getDay()]}-FEIRA • ${timeStr}`;
+            } else {
+                timeElement.textContent = `${dayFull} • ${timeStr}`;
+            }
+        }
+
+        // Alternar menu mobile
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = this.querySelector('i');
+
+            mobileMenu.classList.toggle('open');
+
+            if (mobileMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+                this.classList.add('bg-red-600');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                this.classList.remove('bg-red-600');
+            }
+        });
+
+        // Fechar menu ao clicar em um link (em telas pequenas)
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', function () {
+                if (window.innerWidth < 640) {
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    const toggleButton = document.getElementById('mobile-menu-toggle');
+                    const icon = toggleButton.querySelector('i');
+
+                    mobileMenu.classList.remove('open');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    toggleButton.classList.remove('bg-red-600');
+                }
+            });
+        });
+
+        // Atualizar data/hora e adaptar conteúdo ao redimensionar
+        function handleResize() {
+            updateDateTime();
+
+            // Ajustar headlines para diferentes tamanhos
+            const headlines = {
+                mobile: "NOVO IMPOSTO STREAMING +15% • MOBILIDADE URBANA • CONFIANÇA ↑",
+                md: "NOVO IMPOSTO STREAMING +15% • PREFEITO ANUNCIA MOBILIDADE URBANA • CONFIANÇA DO CONSUMIDOR AUMENTA",
+                default: "NOVO IMPOSTO SOBRE STREAMING +15% • PREFEITO ANUNCIA MOBILIDADE URBANA • CONFIANÇA DO CONSUMIDOR AUMENTA • TEMPESTADE NO LITORAL SUL"
+            };
+
+            const headlineElement = document.getElementById('mobile-headline');
+            if (window.innerWidth < 640) {
+                headlineElement.textContent = headlines.mobile;
+            } else if (window.innerWidth < 768) {
+                headlineElement.textContent = headlines.md;
+            }
+        }
+
+        // Headline rotativa para mobile
+        let headlineIndex = 0;
+        function rotateMobileHeadline() {
+            if (window.innerWidth < 640) {
+                const headlines = [
+                    "NOVO IMPOSTO STREAMING +15%",
+                    "PREFEITO ANUNCIA MOBILIDADE",
+                    "CONFIANÇA DO CONSUMIDOR AUMENTA",
+                    "TEMPESTADE NO LITORAL SUL"
+                ];
+
+                const headlineElement = document.getElementById('mobile-headline');
+                headlineIndex = (headlineIndex + 1) % headlines.length;
+
+                // Adicionar efeito de transição
+                headlineElement.style.opacity = '0';
+                setTimeout(() => {
+                    headlineElement.textContent = headlines[headlineIndex];
+                    headlineElement.style.opacity = '1';
+                }, 300);
+            }
+        }
+
+        // Inicializar
+        updateDateTime();
+        setInterval(updateDateTime, 30000); // Atualizar a cada 30 segundos
+        setInterval(rotateMobileHeadline, 4000); // Rotacionar headline a cada 4 segundos
+        window.addEventListener('resize', handleResize);
+
+        // Efeito de hover nos botões
+        document.querySelectorAll('.brutal-hover').forEach(button => {
+            button.addEventListener('mouseleave', function () {
+                setTimeout(() => {
+                    this.style.transform = 'translate(0, 0)';
+                    this.style.boxShadow = '6px 6px 0px #000';
+                }, 150);
+            });
+        });
+
+        // Detectar breakpoint MD e aplicar estilos específicos
+        function applyMDStyles() {
+            const isMD = window.innerWidth >= 768 && window.innerWidth <= 1024;
+            const body = document.body;
+
+            if (isMD) {
+                body.classList.add('md-optimized');
+            } else {
+                body.classList.remove('md-optimized');
+            }
+        }
+
+        // Aplicar ao carregar e redimensionar
+        applyMDStyles();
+        window.addEventListener('resize', applyMDStyles);
+    </script>
+</body>

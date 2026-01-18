@@ -1,1 +1,381 @@
-<h2>Footer</h2>
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+        
+        .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .font-ibm-mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        
+        .brutal-border {
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px #000;
+        }
+        
+        .brutal-border-thin {
+            border: 2px solid #000;
+        }
+        
+        .brutal-shadow {
+            box-shadow: 6px 6px 0px #000;
+        }
+        
+        .brutal-hover:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0px #000;
+            transition: all 0.2s ease;
+        }
+        
+        .brutal-transition {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Accordion para mobile */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .accordion-content.open {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+        
+        .accordion-toggle.open i {
+            transform: rotate(180deg);
+        }
+        
+        /* Ajustes para telas MD (768px-1024px) - consistente com header */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .md-footer-text {
+                font-size: 0.85rem !important;
+            }
+            
+            .md-footer-heading {
+                font-size: 1.1rem !important;
+            }
+            
+            .md-footer-padding {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            
+            .md-footer-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 1.5rem !important;
+            }
+            
+            .md-footer-newsletter {
+                grid-column: span 2 / span 2 !important;
+            }
+        }
+        
+        /* Esconder alguns elementos em mobile muito pequeno */
+        @media (max-width: 480px) {
+            .xs-hide {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-space-grotesk min-h-screen flex flex-col">
+    <!-- Conteúdo principal (apenas para demonstração) -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="bg-white brutal-border p-6 mb-8">
+            <h1 class="text-3xl md:text-4xl font-black mb-4">PORTAL DE NOTÍCIAS BRUTALISTA</h1>
+            <p class="mb-6">Este é um conteúdo de exemplo para demonstrar como o footer fica posicionado abaixo do conteúdo principal.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gray-100 p-4 brutal-border-thin">
+                    <h3 class="font-bold text-lg mb-3">NOTÍCIA EM DESTAQUE</h3>
+                    <p>Tecnologia revoluciona o setor de educação com plataformas de aprendizado adaptativo.</p>
+                </div>
+                <div class="bg-gray-100 p-4 brutal-border-thin">
+                    <h3 class="font-bold text-lg mb-3">ANÁLISE ECONÔMICA</h3>
+                    <p>Mercado financeiro reage positivamente aos novos indicadores de crescimento.</p>
+                </div>
+                <div class="bg-gray-100 p-4 brutal-border-thin">
+                    <h3 class="font-bold text-lg mb-3">ESPORTES</h3>
+                    <p>Time local conquista vitória histórica no campeonato nacional após 12 anos.</p>
+                </div>
+            </div>
+            
+            <p class="text-center text-gray-600 font-ibm-mono text-sm">Role para baixo para ver o footer ↓</p>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-black text-white">
+        <!-- Seção principal do footer -->
+        <div class="container mx-auto px-4 py-8 md:py-12">
+            <!-- Newsletter -->
+            <div class="bg-yellow-400 text-black p-6 mb-10 brutal-shadow md-footer-newsletter">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0 md:mr-8">
+                        <h3 class="text-2xl md:text-3xl font-black mb-2">NÃO PERCA NADA</h3>
+                        <p class="font-ibm-mono">Receba as notícias mais importantes diretamente no seu email.</p>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="email" placeholder="SEU EMAIL" class="bg-white text-black px-4 py-3 brutal-border-thin flex-grow min-w-0 font-ibm-mono focus:outline-none focus:ring-2 focus:ring-black">
+                            <button class="bg-black text-white px-6 py-3 font-bold brutal-border-thin brutal-hover brutal-transition whitespace-nowrap">INSCREVER-SE</button>
+                        </div>
+                        <p class="text-sm mt-3 font-ibm-mono text-gray-800">Ao se inscrever, você concorda com nossa <a href="#" class="underline font-bold">Política de Privacidade</a>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <div class="flex items-center">
+                            <div class="bg-yellow-400 text-black p-2 mr-3 brutal-shadow">
+                                <i class="fas fa-newspaper text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black">NOTÍCIAS<span class="text-yellow-400">BRUTAIS</span></h3>
+                                <p class="font-ibm-mono text-xs text-gray-400 mt-1">A VERDADE SEM DECORAÇÃO</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-white hover:text-yellow-400 text-xl">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400 text-xl">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400 text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400 text-xl">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400 text-xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400 text-xl">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:hidden border-t border-gray-800 pt-6">
+                <div class="accordion-item mb-4">
+                    <button class="accordion-toggle flex justify-between items-center w-full text-left font-bold text-lg py-3">
+                        <span>LINKS RÁPIDOS</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="grid grid-cols-2 gap-4 py-4">
+                            <a href="#" class="hover:text-yellow-400">Quem Somos</a>
+                            <a href="#" class="hover:text-yellow-400">Política</a>
+                            <a href="#" class="hover:text-yellow-400">Equipe</a>
+                            <a href="#" class="hover:text-yellow-400">Economia</a>
+                            <a href="#" class="hover:text-yellow-400">Trabalhe Conosco</a>
+                            <a href="#" class="hover:text-yellow-400">Tecnologia</a>
+                            <a href="#" class="hover:text-yellow-400">APP Móvel</a>
+                            <a href="#" class="hover:text-yellow-400">Esportes</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-4">
+                    <button class="accordion-toggle flex justify-between items-center w-full text-left font-bold text-lg py-3">
+                        <span>RECURSOS E CONTATO</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="grid grid-cols-2 gap-4 py-4">
+                            <a href="#" class="hover:text-yellow-400">Newsletter</a>
+                            <a href="#" class="hover:text-yellow-400">Podcast</a>
+                            <a href="#" class="hover:text-yellow-400">Arquivo</a>
+                            <div class="col-span-2">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-phone text-yellow-400 mr-3"></i>
+                                    <span>(11) 9999-9999</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-yellow-400 mr-3"></i>
+                                    <span>contato@noticiasbrutais.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Links legais -->
+            <div class="border-t border-gray-800 pt-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <div class="flex flex-wrap justify-center gap-4 font-ibm-mono text-sm text-gray-400">
+                            <a href="#" class="hover:text-yellow-400">Termos de Uso</a>
+                            <span class="xs-hide">•</span>
+                            <a href="#" class="hover:text-yellow-400">Política de Privacidade</a>
+                            <span class="xs-hide">•</span>
+                            <a href="#" class="hover:text-yellow-400">Cookies</a>
+                            <span class="xs-hide">•</span>
+                            <a href="#" class="hover:text-yellow-400">Acessibilidade</a>
+                            <span class="xs-hide">•</span>
+                            <a href="#" class="hover:text-yellow-400">Anuncie Conosco</a>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-gray-400 font-ibm-mono">
+                        <span>ISSN 0000-0000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rodapé inferior -->
+        <div class="bg-gray-900 py-6">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <p class="font-ibm-mono text-sm text-gray-400">
+                            © 2024 <span class="text-yellow-400 font-bold">NOTÍCIASBRUTAIS</span>. TODOS OS DIREITOS RESERVADOS.
+                        </p>
+                        <p class="font-ibm-mono text-xs text-gray-500 mt-1">
+                            Este é um projeto demonstrativo. Qualquer semelhança com a realidade é mera coincidência.
+                        </p>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="flex items-center mr-4">
+                            <i class="fas fa-shield-alt text-yellow-400 mr-2"></i>
+                            <span class="font-ibm-mono text-xs text-gray-400">SITE SEGURO</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                            <span class="font-ibm-mono text-xs text-gray-400">V. 4.2.1</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Selos de verificação (visíveis apenas em desktop) -->
+                <div class="hidden md:flex justify-center mt-6 pt-6 border-t border-gray-800">
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="bg-gray-800 px-3 py-1 text-xs font-ibm-mono">JORNALISMO VERIFICADO</div>
+                        <div class="bg-gray-800 px-3 py-1 text-xs font-ibm-mono">FONTES CONFIÁVEIS</div>
+                        <div class="bg-gray-800 px-3 py-1 text-xs font-ibm-mono">SEM FAKE NEWS</div>
+                        <div class="bg-gray-800 px-3 py-1 text-xs font-ibm-mono">FACT-CHECKING</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Voltar ao topo -->
+        <div class="bg-black border-t border-gray-800">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex justify-center">
+                    <button id="back-to-top" class="bg-yellow-400 text-black px-6 py-2 font-bold brutal-border-thin brutal-hover brutal-transition flex items-center">
+                        <i class="fas fa-arrow-up mr-2"></i> VOLTAR AO TOPO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Accordion para mobile
+        document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const isOpen = content.classList.contains('open');
+                
+                // Fechar todos os outros accordions
+                document.querySelectorAll('.accordion-content').forEach(item => {
+                    if (item !== content) {
+                        item.classList.remove('open');
+                    }
+                });
+                
+                document.querySelectorAll('.accordion-toggle').forEach(item => {
+                    if (item !== this) {
+                        item.classList.remove('open');
+                    }
+                });
+                
+                // Alternar o atual
+                content.classList.toggle('open');
+                this.classList.toggle('open');
+            });
+        });
+        
+        // Botão voltar ao topo
+        document.getElementById('back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Mostrar/esconder botão voltar ao topo baseado na rolagem
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('fixed', 'bottom-6', 'right-6', 'z-50');
+                backToTopBtn.classList.remove('relative');
+            } else {
+                backToTopBtn.classList.remove('fixed', 'bottom-6', 'right-6', 'z-50');
+                backToTopBtn.classList.add('relative');
+            }
+        });
+        
+        // Efeito de hover nos botões
+        document.querySelectorAll('.brutal-hover').forEach(button => {
+            button.addEventListener('mouseleave', function() {
+                setTimeout(() => {
+                    this.style.transform = 'translate(0, 0)';
+                    this.style.boxShadow = '6px 6px 0px #000';
+                }, 150);
+            });
+        });
+        
+        // Efeito de digitação no campo de email
+        const emailInput = document.querySelector('input[type="email"]');
+        if (emailInput) {
+            emailInput.addEventListener('focus', function() {
+                this.style.backgroundColor = '#fef3c7';
+            });
+            
+            emailInput.addEventListener('blur', function() {
+                this.style.backgroundColor = '';
+            });
+        }
+        
+        // Newsletter submission
+        const newsletterForm = document.querySelector('.bg-yellow-400 button');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('click', function(e) {
+                e.preventDefault();
+                const emailInput = document.querySelector('input[type="email"]');
+                if (emailInput.value) {
+                    // Efeito visual de sucesso
+                    this.innerHTML = '<i class="fas fa-check mr-2"></i> INSCRITO!';
+                    this.classList.remove('bg-black');
+                    this.classList.add('bg-green-600');
+                    
+                    // Reset após 3 segundos
+                    setTimeout(() => {
+                        this.innerHTML = 'INSCREVER-SE';
+                        this.classList.remove('bg-green-600');
+                        this.classList.add('bg-black');
+                        emailInput.value = '';
+                    }, 3000);
+                }
+            });
+        }
+    </script>
+</body>

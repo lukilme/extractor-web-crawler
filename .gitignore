@@ -3,3 +3,4 @@ mongo/*
 postgres/*
 .venv-nlp
 .env
+.ruff_cache

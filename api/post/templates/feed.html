@@ -1,23 +1,9 @@
+{% extends './layouts/layout1.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
+{% block title %}Feed{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Feed</title>
-    <style>
-        .post {
-            border-bottom: 1px solid #ccc;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Feed</h1>
-
+{% block main_content %}
     <div id="feed">
         {% for post in page_obj %}
         <div class="post">
@@ -29,6 +15,6 @@
     </div>
 
     <div id="loading" style="display:none;">Carregando...</div>
-</body>
+
 <script src="{% static 'main.js' %}"></script>
-</html>
+{% endblock %}

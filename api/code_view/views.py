@@ -10,7 +10,8 @@ def editor(request):
         code = request.POST.get("code", "")
 
         service = CodeService(BASE_DIR)
-        service.save_code("saved_code.py", code)
+        # service.save_code("saved_code.py", code)
+        print(code)
 
         return redirect("/code/editor")
 

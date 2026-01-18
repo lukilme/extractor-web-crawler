@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias Brutais - Portal de Notícias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos brutais adicionais */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+        .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .font-ibm-mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .brutal-border {
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        .brutal-border-thin {
+            border: 2px solid #000;
+        }
+
+        .brutal-shadow {
+            box-shadow: 6px 6px 0px #000;
+        }
+
+        .brutal-hover:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        .brutal-transition {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Background com padrão brutalista */
+        .brutal-bg {
+            background-color: #f5f5f5;
+            background-image:
+                linear-gradient(#000 2px, transparent 2px),
+                linear-gradient(90deg, #000 2px, transparent 2px),
+                linear-gradient(#e5e5e5 1px, transparent 1px),
+                linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+            background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+        }
+
+        /* Efeito de digitação */
+        .typewriter {
+            overflow: hidden;
+            border-right: 4px solid #000;
+            white-space: nowrap;
+            animation:
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #000;
+            }
+        }
+
+        /* Toggle entre login/register */
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Efeito de foco nos inputs */
+        .brutal-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Ajustes para telas MD */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .md-grid-adjust {
+                grid-template-columns: 1fr !important;
+            }
+
+            .md-hero-height {
+                min-height: 60vh !important;
+            }
+
+            .md-form-height {
+                height: auto !important;
+                min-height: 500px;
+            }
+        }
+
+        /* Efeito de pulso para CTA */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="font-space-grotesk brutal-bg min-h-screen">
+    <!-- Header simplificado -->
+    <header class="sticky top-0 z-50">
+        <div class="bg-black text-white py-4 px-4 md:px-6">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="bg-yellow-400 text-black p-2 mr-3 brutal-shadow">
+                        <i class="fas fa-newspaper text-xl md:text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-3xl font-black tracking-tighter">NOTÍCIAS<span
+                                class="text-yellow-400">BRUTAIS</span></h1>
+                        <p class="font-ibm-mono text-xs tracking-widest hidden md:block">A VERDADE SEM DECORAÇÃO</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <button id="login-toggle-btn"
+                        class="bg-yellow-400 text-black px-4 py-2 font-bold brutal-border-thin brutal-hover brutal-transition">
+                        ENTRAR
+                    </button>
+                    <button id="register-toggle-btn"
+                        class="bg-white text-black px-4 py-2 font-bold brutal-border-thin brutal-hover brutal-transition">
+                        CADASTRAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="container mx-auto px-4 md:px-6 py-8 md:py-12">
+        <!-- Hero Section -->
+        <section class="mb-12 md:mb-20">
+            <div class="bg-white brutal-border p-6 md:p-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 md-grid-adjust">
+                    <!-- Texto principal -->
+                    <div class="flex flex-col justify-center">
+                        <div class="mb-6">
+                            <span class="bg-black text-white px-3 py-1 font-ibm-mono text-sm md:text-base">NOVO
+                                PORTAL</span>
+                            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black mt-4 mb-6 leading-tight">
+                                NOTÍCIAS <span class="text-red-600">SEM</span> <span class="typewriter">FILTRO</span>
+                            </h2>
+                            <p class="text-lg md:text-xl text-gray-700 mb-8">
+                                Acesso total a reportagens investigativas, análises profundas e informações que outros
+                                portais não te mostram.
+                                <span class="font-bold text-black">Junte-se a mais de 50.000 leitores que não aceitam
+                                    versões editadas da verdade.</span>
+                            </p>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                            <div class="bg-black text-white p-4 text-center brutal-border-thin">
+                                <div class="text-2xl md:text-3xl font-bold text-yellow-400">+500</div>
+                                <div class="font-ibm-mono text-xs md:text-sm">REPORTAGENS/DIA</div>
+                            </div>
+                            <div class="bg-black text-white p-4 text-center brutal-border-thin">
+                                <div class="text-2xl md:text-3xl font-bold text-yellow-400">24h</div>
+                                <div class="font-ibm-mono text-xs md:text-sm">ATUALIZAÇÃO</div>
+                            </div>
+                            <div class="bg-black text-white p-4 text-center brutal-border-thin">
+                                <div class="text-2xl md:text-3xl font-bold text-yellow-400">50K</div>
+                                <div class="font-ibm-mono text-xs md:text-sm">LEITORES</div>
+                            </div>
+                            <div class="bg-black text-white p-4 text-center brutal-border-thin">
+                                <div class="text-2xl md:text-3xl font-bold text-yellow-400">0</div>
+                                <div class="font-ibm-mono text-xs md:text-sm">CENSURA</div>
+                            </div>
+                        </div>
+
+                        <!-- CTA -->
+                        <div>
+                            <button id="hero-register-btn"
+                                class="bg-red-600 text-white px-8 py-4 font-bold text-lg brutal-border-thin brutal-hover brutal-transition pulse-animation w-full md:w-auto">
+                                <i class="fas fa-bolt mr-2"></i> ACESSO IMEDIATO - GRÁTIS POR 7 DIAS
+                            </button>
+                            <p class="font-ibm-mono text-sm text-gray-600 mt-4 text-center md:text-left">
+                                *Não pedimos cartão de crédito. Acesso completo por 7 dias.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Imagem/Ilustração -->
+                    <div class="flex items-center justify-center">
+                        <div class="relative w-full h-64 md:h-96">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-black to-gray-900 brutal-border flex items-center justify-center">
+                                <div class="text-center p-6">
+                                    <div class="text-yellow-400 text-5xl md:text-7xl mb-4">
+                                        <i class="fas fa-newspaper"></i>
+                                    </div>
+                                    <div class="text-white font-ibm-mono text-sm md:text-base">
+                                        <div class="mb-2">"A PRIMEIRA VÍTIMA DE UMA GUERRA É A VERDADE"</div>
+                                        <div class="text-xs md:text-sm text-gray-400">- NOSSO LEMA</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute -bottom-4 -right-4 w-3/4 h-3/4 bg-yellow-400 -z-10 brutal-border">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="auth-section" class="mb-16" style="display: none;">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md-grid-adjust">
+                <form id="login-container" class="form-container active" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="login">
+                    <div class="bg-white brutal-border p-6 md:p-8 h-full md-form-height">
+                        <div class="flex items-center mb-8">
+                            <div class="bg-black text-white p-3 mr-4 brutal-shadow">
+                                <i class="fas fa-key text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-black">ACESSE SUA CONTA</h3>
+                                <p class="font-ibm-mono text-gray-600">Entre para continuar de onde parou</p>
+                            </div>
+                        </div>
+
+                        <form id="login-form" class="space-y-6">
+                            <div>
+                                <label for="login-email" class="block font-bold mb-2 font-ibm-mono">
+                                    <i class="fas fa-envelope mr-2 text-yellow-600"></i>EMAIL
+                                </label>
+                                <input name="email" type="email" id="login-email" required
+                                    class="w-full bg-gray-100 brutal-border-thin p-4 brutal-input font-ibm-mono focus:bg-white"
+                                    placeholder="SEU@EMAIL.COM">
+                            </div>
+
+                            <div>
+                                <label for="login-password" class="block font-bold mb-2 font-ibm-mono">
+                                    <i class="fas fa-lock mr-2 text-yellow-600"></i>SENHA
+                                </label>
+                                <input type="password" id="login-password" required name="password"
+                                    class="w-full bg-gray-100 brutal-border-thin p-4 brutal-input font-ibm-mono focus:bg-white"
+                                    placeholder="••••••••">
+                                <div class="flex justify-between items-center mt-2">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="remember-me" class="mr-2">
+                                        <label for="remember-me" class="font-ibm-mono text-sm">Lembrar-me</label>
+                                    </div>
+                                    <a href="#" class="font-ibm-mono text-sm text-red-600 hover:underline">Esqueci a
+                                        senha</a>
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-black text-white p-4 font-bold brutal-border-thin brutal-hover brutal-transition text-lg">
+                                <i class="fas fa-sign-in-alt mr-2"></i> ENTRAR NA CONTA
+                            </button>
+
+                            <div class="text-center font-ibm-mono text-gray-600">
+                                Ou entre com:
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <button type="button"
+                                    class="bg-blue-600 text-white p-3 font-bold brutal-border-thin brutal-hover brutal-transition flex items-center justify-center">
+                                    <i class="fab fa-facebook-f mr-2"></i> Facebook
+                                </button>
+                                <button type="button"
+                                    class="bg-gray-800 text-white p-3 font-bold brutal-border-thin brutal-hover brutal-transition flex items-center justify-center">
+                                    <i class="fab fa-google mr-2"></i> Google
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-8 pt-6 border-t border-gray-300 text-center">
+                            <p class="font-ibm-mono">
+                                Não tem uma conta?
+                                <button id="switch-to-register" class="text-red-600 font-bold hover:underline ml-1">
+                                    Cadastre-se agora
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="register-container" class="form-container" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="register">
+
+                    <div class="bg-white brutal-border p-6 md:p-8 h-full md-form-height">
+                        <div class="flex items-center mb-8">
+                            <div class="bg-red-600 text-white p-3 mr-4 brutal-shadow">
+                                <i class="fas fa-user-plus text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl md:text-3xl font-black">JUNTE-SE A NÓS</h3>
+                                <p class="font-ibm-mono text-gray-600">7 dias grátis, depois R$ 9,90/mês</p>
+                            </div>
+                        </div>
+
+                        <form id="register-form" class="space-y-6">
+                            <div>
+                                <label for="register-name" class="block font-bold mb-2 font-ibm-mono">
+                                    <i class="fas fa-user mr-2 text-yellow-600"></i>NOME COMPLETO
+                                </label>
+                                <input type="text" id="register-name" name="name" required
+                                    class="w-full bg-gray-100 brutal-border-thin p-4 brutal-input font-ibm-mono focus:bg-white"
+                                    placeholder="SEU NOME COMPLETO">
+                            </div>
+
+                            <div>
+                                <label for="register-email" class="block font-bold mb-2 font-ibm-mono">
+                                    <i class="fas fa-envelope mr-2 text-yellow-600"></i>EMAIL
+                                </label>
+                                <input type="email" id="register-email" name="email" required
+                                    class="w-full bg-gray-100 brutal-border-thin p-4 brutal-input font-ibm-mono focus:bg-white"
+                                    placeholder="SEU@EMAIL.COM">
+                            </div>
+
+                            <div>
+                                <label for="register-password" class="block font-bold mb-2 font-ibm-mono">
+                                    <i class="fas fa-lock mr-2 text-yellow-600"></i>SENHA
+                                </label>
+                                <input type="password" id="register-password" name="password" required minlength="8"
+                                    class="w-full bg-gray-100 brutal-border-thin p-4 brutal-input font-ibm-mono focus:bg-white"
+                                    placeholder="MÍNIMO 8 CARACTERES">
+                                <div class="font-ibm-mono text-xs text-gray-600 mt-2">
+                                    <i class="fas fa-info-circle mr-1"></i> Use letras, números e caracteres especiais
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="confirm-password" class="block font-bold mb-2 font-ibm-mono">
+                                    <i class="fas fa-lock mr-2 text-yellow-600"></i>CONFIRMAR SENHA
+                                </label>
+                                <input type="password" id="confirm-password" name="password_repeat" required
+                                    class="w-full bg-gray-100 brutal-border-thin p-4 brutal-input font-ibm-mono focus:bg-white"
+                                    placeholder="CONFIRME SUA SENHA">
+                            </div>
+
+                            <div class="flex items-start">
+                                <input type="checkbox" id="accept-terms" required class="mr-3 mt-1">
+                                <label for="accept-terms" class="font-ibm-mono text-sm">
+                                    Concordo com os <a href="#" class="text-red-600 hover:underline">Termos de Uso</a> e
+                                    <a href="#" class="text-red-600 hover:underline">Política de Privacidade</a>.
+                                    Entendo que posso cancelar a qualquer momento após o período de teste.
+                                </label>
+                            </div>
+
+                            <div class="flex items-start">
+                                <input type="checkbox" id="newsletter" class="mr-3 mt-1" checked>
+                                <label for="newsletter" class="font-ibm-mono text-sm">
+                                    Receber newsletters com as principais notícias e atualizações.
+                                </label>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-red-600 text-white p-4 font-bold brutal-border-thin brutal-hover brutal-transition text-lg">
+                                <i class="fas fa-bolt mr-2"></i> CRIAR CONTA GRÁTIS
+                            </button>
+                        </form>
+
+                        <div class="mt-8 pt-6 border-t border-gray-300 text-center">
+                            <p class="font-ibm-mono">
+                                Já tem uma conta?
+                                <button id="switch-to-login" class="text-red-600 font-bold hover:underline ml-1">
+                                    Faça login
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Informações adicionais -->
+                <div class="bg-black text-white p-6 md:p-8 brutal-border md-form-height">
+                    <div class="mb-8">
+                        <h3 class="text-2xl md:text-3xl font-black mb-4 text-yellow-400">POR QUE SE CADASTRAR?</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <div class="bg-yellow-400 text-black p-2 mr-3 flex-shrink-0">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">ACESSO COMPLETO</h4>
+                                    <p class="font-ibm-mono text-sm text-gray-300">Todas as reportagens, análises
+                                        exclusivas e conteúdo premium.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-yellow-400 text-black p-2 mr-3 flex-shrink-0">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">ZERO ANÚNCIOS</h4>
+                                    <p class="font-ibm-mono text-sm text-gray-300">Experiência de leitura limpa, sem
+                                        banners ou pop-ups.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-yellow-400 text-black p-2 mr-3 flex-shrink-0">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">NEWSLETTER PERSONALIZADA</h4>
+                                    <p class="font-ibm-mono text-sm text-gray-300">Receba apenas o que importa para
+                                        você, baseado em seus interesses.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-yellow-400 text-black p-2 mr-3 flex-shrink-0">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">COMUNIDADE EXCLUSIVA</h4>
+                                    <p class="font-ibm-mono text-sm text-gray-300">Participe de debates, enquetes e
+                                        eventos com jornalistas.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 brutal-border-thin">
+                        <h4 class="font-bold mb-2 text-yellow-400">O QUE OS LEITORES DIZEM:</h4>
+                        <div class="font-ibm-mono text-sm italic">
+                            "Finalmente um portal que não tem medo de publicar a verdade, mesmo quando é
+                            desconfortável."
+                            <div class="mt-2 font-bold">- Carla S., Assinante há 2 anos</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="font-ibm-mono text-center text-gray-400 text-sm">
+                            <i class="fas fa-shield-alt mr-1"></i> Dados 100% seguros • Criptografia SSL • Não
+                            compartilhamos seus dados
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-black mb-4">O QUE VOCÊ VAI ENCONTRAR AQUI</h2>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                    Um portal de notícias construído sobre os pilares do jornalismo investigativo,
+                    transparência radical e design que não esconde nada.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white brutal-border p-6">
+                    <div class="bg-black text-white p-4 inline-block mb-4 brutal-shadow">
+                        <i class="fas fa-search text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-black mb-3">REPORTAGEM INVESTIGATIVA</h3>
+                    <p class="text-gray-700 mb-4">
+                        Nossas equipes vão a fundo em cada história, desvendando o que fica por trás das manchetes.
+                    </p>
+                    <div class="font-ibm-mono text-sm text-gray-500">
+                        <i class="fas fa-clock mr-1"></i> Atualização contínua
+                    </div>
+                </div>
+
+                <div class="bg-white brutal-border p-6">
+                    <div class="bg-red-600 text-white p-4 inline-block mb-4 brutal-shadow">
+                        <i class="fas fa-chart-bar text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-black mb-3">DADOS E ANÁLISE</h3>
+                    <p class="text-gray-700 mb-4">
+                        Transformamos números complexos em visualizações claras e informações acionáveis.
+                    </p>
+                    <div class="font-ibm-mono text-sm text-gray-500">
+                        <i class="fas fa-database mr-1"></i> Fontes verificadas
+                    </div>
+                </div>
+
+                <div class="bg-white brutal-border p-6">
+                    <div class="bg-yellow-400 text-black p-4 inline-block mb-4 brutal-shadow">
+                        <i class="fas fa-bullhorn text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-black mb-3">VOZ DA COMUNIDADE</h3>
+                    <p class="text-gray-700 mb-4">
+                        Espaço para debates, opiniões e contribuições dos nossos leitores. Sua voz importa.
+                    </p>
+                    <div class="font-ibm-mono text-sm text-gray-500">
+                        <i class="fas fa-users mr-1"></i> Debates moderados
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA final -->
+        <section class="mb-12">
+            <div class="bg-gradient-to-r from-black to-gray-900 text-white p-8 md:p-12 brutal-border text-center">
+                <h2 class="text-3xl md:text-4xl font-black mb-6">PRONTO PARA VER A VERDADE SEM FILTROS?</h2>
+                <p class="text-xl mb-8 max-w-2xl mx-auto">
+                    Junte-se aos milhares de leitores que já descobriram o poder da informação sem censura.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <button id="final-register-btn"
+                        class="bg-red-600 text-white px-8 py-4 font-bold text-lg brutal-border-thin brutal-hover brutal-transition">
+                        <i class="fas fa-user-plus mr-2"></i> CRIAR CONTA GRATUITA
+                    </button>
+                    <button id="final-login-btn"
+                        class="bg-white text-black px-8 py-4 font-bold text-lg brutal-border-thin brutal-hover brutal-transition">
+                        <i class="fas fa-sign-in-alt mr-2"></i> FAZER LOGIN
+                    </button>
+                </div>
+                <p class="font-ibm-mono text-gray-400 mt-6">
+                    <i class="fas fa-lock mr-1"></i> 7 dias grátis • Cancele quando quiser • Sem compromisso
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer simplificado -->
+    <footer class="bg-black text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="bg-yellow-400 text-black p-2 mr-3 brutal-shadow">
+                        <i class="fas fa-newspaper text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black">NOTÍCIAS<span class="text-yellow-400">BRUTAIS</span></h3>
+                        <p class="font-ibm-mono text-xs text-gray-400">A VERDADE SEM DECORAÇÃO</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-yellow-400">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-yellow-400">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-yellow-400">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-yellow-400">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="font-ibm-mono text-sm text-gray-400">
+                            © 2024 NOTÍCIASBRUTAIS. TODOS OS DIREITOS RESERVADOS.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center gap-4 font-ibm-mono text-sm text-gray-400">
+                        <a href="#" class="hover:text-yellow-400">Termos</a>
+                        <a href="#" class="hover:text-yellow-400">Privacidade</a>
+                        <a href="#" class="hover:text-yellow-400">Cookies</a>
+                        <a href="#" class="hover:text-yellow-400">Contato</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de sucesso (oculto por padrão) -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
+        style="display: none;">
+        <div class="bg-white brutal-border p-8 max-w-md w-full">
+            <div class="text-center">
+                <div class="bg-green-600 text-white p-4 inline-block rounded-full mb-4">
+                    <i class="fas fa-check text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-black mb-4">CONTA CRIADA COM SUCESSO!</h3>
+                <p class="text-gray-700 mb-6">
+                    Bem-vindo(a) ao <span class="font-bold">Notícias Brutais</span>. Seu acesso gratuito de 7 dias já
+                    está ativo.
+                </p>
+                <button id="close-modal"
+                    class="bg-black text-white px-6 py-3 font-bold brutal-border-thin brutal-hover brutal-transition">
+                    EXPLORAR O PORTAL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const authSection = document.getElementById('auth-section');
+        const loginContainer = document.getElementById('login-container');
+        const registerContainer = document.getElementById('register-container');
+        const loginToggleBtn = document.getElementById('login-toggle-btn');
+        const registerToggleBtn = document.getElementById('register-toggle-btn');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const heroRegisterBtn = document.getElementById('hero-register-btn');
+        const finalRegisterBtn = document.getElementById('final-register-btn');
+        const finalLoginBtn = document.getElementById('final-login-btn');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const successModal = document.getElementById('success-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        // Mostrar seção de autenticação
+        function showAuthSection() {
+            authSection.style.display = 'block';
+            window.scrollTo({
+                top: authSection.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // Alternar entre login e registro
+        function showLogin() {
+            loginContainer.classList.add('active');
+            registerContainer.classList.remove('active');
+            loginToggleBtn.classList.add('bg-yellow-400', 'text-black');
+            loginToggleBtn.classList.remove('bg-white', 'text-black');
+            registerToggleBtn.classList.remove('bg-yellow-400', 'text-black');
+            registerToggleBtn.classList.add('bg-white', 'text-black');
+        }
+
+        function showRegister() {
+            registerContainer.classList.add('active');
+            loginContainer.classList.remove('active');
+            registerToggleBtn.classList.add('bg-yellow-400', 'text-black');
+            registerToggleBtn.classList.remove('bg-white', 'text-black');
+            loginToggleBtn.classList.remove('bg-yellow-400', 'text-black');
+            loginToggleBtn.classList.add('bg-white', 'text-black');
+        }
+
+        // Event Listeners
+        loginToggleBtn.addEventListener('click', function () {
+            showAuthSection();
+            showLogin();
+        });
+
+        registerToggleBtn.addEventListener('click', function () {
+            showAuthSection();
+            showRegister();
+        });
+
+        switchToRegister.addEventListener('click', function () {
+            showRegister();
+        });
+
+        switchToLogin.addEventListener('click', function () {
+            showLogin();
+        });
+
+        heroRegisterBtn.addEventListener('click', function () {
+            showAuthSection();
+            showRegister();
+        });
+
+        finalRegisterBtn.addEventListener('click', function () {
+            showAuthSection();
+            showRegister();
+        });
+
+        finalLoginBtn.addEventListener('click', function () {
+            showAuthSection();
+            showLogin();
+        });
+
+        // Validação do formulário de login
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Simulação de login bem-sucedido
+            console.log('Login attempt:', { email, password });
+
+            // Em um caso real, aqui seria uma chamada AJAX
+            alert('Login realizado com sucesso! Redirecionando...');
+
+            // Simulação de redirecionamento
+            setTimeout(() => {
+                window.location.href = '#';
+            }, 1000);
+        });
+
+        // Validação do formulário de registro
+        registerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const acceptTerms = document.getElementById('accept-terms').checked;
+
+            // Validações
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            if (!acceptTerms) {
+                alert('Você deve aceitar os Termos de Uso e Política de Privacidade.');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('A senha deve ter pelo menos 8 caracteres.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem.');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                alert('Por favor, insira um email válido.');
+                return;
+            }
+
+            // Simulação de registro bem-sucedido
+            console.log('Registration attempt:', { name, email, password });
+
+            // Mostrar modal de sucesso
+            successModal.style.display = 'flex';
+
+            // Em um caso real, aqui seria uma chamada AJAX
+            // e redirecionamento após sucesso
+        });
+
+        // Fechar modal
+        closeModalBtn.addEventListener('click', function () {
+            successModal.style.display = 'none';
+
+            // Limpar formulário
+            registerForm.reset();
+
+            // Redirecionar para página principal (simulação)
+            alert('Redirecionando para a página inicial do portal...');
+        });
+
+        // Fechar modal clicando fora
+        successModal.addEventListener('click', function (e) {
+            if (e.target === successModal) {
+                successModal.style.display = 'none';
+            }
+        });
+
+        // Função auxiliar para validar email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Efeito de digitação
+        const typewriterElement = document.querySelector('.typewriter');
+        if (typewriterElement) {
+            // Reiniciar animação a cada 10 segundos
+            setInterval(() => {
+                typewriterElement.style.animation = 'none';
+                void typewriterElement.offsetWidth; // Trigger reflow
+                typewriterElement.style.animation = 'typing 3.5s steps(40, end), blink-caret .75s step-end infinite';
+            }, 10000);
+        }
+
+        // Efeito de hover nos botões
+        document.querySelectorAll('.brutal-hover').forEach(button => {
+            button.addEventListener('mouseleave', function () {
+                setTimeout(() => {
+                    this.style.transform = 'translate(0, 0)';
+                    this.style.boxShadow = '6px 6px 0px #000';
+                }, 150);
+            });
+        });
+
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const passwordInput = document.getElementById('register-password');
+
+        if (confirmPasswordInput && passwordInput) {
+            confirmPasswordInput.addEventListener('input', function () {
+                if (this.value !== passwordInput.value && this.value.length > 0) {
+                    this.style.borderColor = '#dc2626';
+                    this.style.boxShadow = '0 0 0 3px rgba(220, 38, 38, 0.2)';
+                } else {
+                    this.style.borderColor = '';
+                    this.style.boxShadow = '';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
