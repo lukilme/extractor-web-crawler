@@ -3,8 +3,6 @@ from task import sum_via_nlp
 from celery.result import AsyncResult
 from django.http import JsonResponse, StreamingHttpResponse
 from user.forms import LoginForm, RegisterForm
-
-
 import requests
 
 def task_status(request):

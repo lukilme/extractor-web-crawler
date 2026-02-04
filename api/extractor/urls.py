@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('user.urls')),
     path('', include('post.urls')),
     path('scraper/', include('scrapper.urls')),
+    path('api/', include('post.api.urls')),     # API
 ]
 
 if settings.DEBUG:

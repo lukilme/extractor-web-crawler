@@ -5,9 +5,6 @@ from django.urls import reverse
 
 
 class NewsPost(models.Model):
-    """
-    Modelo para publicações de notícias
-    """
     STATUS_CHOICES = (
         ('draft', 'Rascunho'),
         ('published', 'Publicado'),
@@ -94,15 +91,12 @@ class NewsPost(models.Model):
         return reverse('news:detail', kwargs={'slug': self.slug})
     
     def increment_views(self):
-        """Incrementa contador de visualizações"""
         self.views_count += 1
         self.save(update_fields=['views_count'])
 
 
 class Comment(models.Model):
-    """
-    Modelo para comentários nas notícias
-    """
+
     news_post = models.ForeignKey(
         NewsPost,
         on_delete=models.CASCADE,
@@ -110,7 +104,7 @@ class Comment(models.Model):
         verbose_name='Notícia'
     )
     
-    author = models.ForeignKey(0
+    author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='comments',

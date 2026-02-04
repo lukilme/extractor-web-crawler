@@ -1,4 +1,3 @@
-# apps/scraper/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -10,7 +9,6 @@ from .services import run_scraping_for_source
 from django.utils import timezone
 
 def is_admin(user):
-    """Verificar se usuário é administrador"""
     return user.is_authenticated and user.is_admin_user()
 
 
@@ -135,9 +133,6 @@ def source_edit_view(request, source_id):
 @login_required
 @user_passes_test(is_admin)
 def source_delete_view(request, source_id):
-    """
-    Deletar fonte de scraping
-    """
     source = get_object_or_404(ScraperSource, id=source_id)
     source.delete()
     messages.success(request, 'Fonte removida com sucesso!')
