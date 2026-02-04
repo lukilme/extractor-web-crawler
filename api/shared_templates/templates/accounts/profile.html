@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil - News Feed{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle"></i> Meu Perfil
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+                            {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" 
+                                 alt="{{ user.username }}" 
+                                 class="rounded-circle border border-3 border-primary mb-3"
+                                 style="width: 180px; height: 180px; object-fit: cover;">
+                            {% else %}
+                            <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center border border-3 border-white mb-3"
+                                 style="width: 180px; height: 180px;">
+                                <span class="text-white display-1 fw-bold">
+                                    {{ user.username|first|upper }}
+                                </span>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mb-3">
+                                <span class="badge bg-{{ user.user_type|yesno:'success,info' }} fs-6">
+                                    {{ user.get_user_type_display }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <h3 class="mb-3">{{ user.get_full_name|default:user.username }}</h3>
+                            
+                            <div class="mb-3">
+                                <label class="text-muted small">Nome de usuário</label>
+                                <p class="mb-0">
+                                    <i class="bi bi-person"></i> {{ user.username }}
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="text-muted small">Email</label>
+                                <p class="mb-0">
+                                    <i class="bi bi-envelope"></i> {{ user.email }}
+                                </p>
+                            </div>
+
+                            {% if user.first_name or user.last_name %}
+                            <div class="mb-3">
+                                <label class="text-muted small">Nome completo</label>
+                                <p class="mb-0">
+                                    <i class="bi bi-person-vcard"></i> {{ user.first_name }} {{ user.last_name }}
+                                </p>
+                            </div>
+                            {% endif %}
+
+                            {% if user.bio %}
+                            <div class="mb-3">
+                                <label class="text-muted small">Biografia</label>
+                                <p class="mb-0">{{ user.bio }}</p>
+                            </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <label class="text-muted small">Membro desde</label>
+                                <p class="mb-0">
+                                    <i class="bi bi-calendar"></i> {{ user.date_joined|date:"d/m/Y" }}
+                                </p>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="mb-0">{{ user.news_posts.count }}</h4>
+                                            <small class="text-muted">Notícias</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="mb-0">{{ user.comments.count }}</h4>
+                                            <small class="text-muted">Comentários</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h4 class="mb-0">{{ user.news_posts.aggregate.total_views|default:0 }}</h4>
+                                            <small class="text-muted">Visualizações</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary">
+                                    <i class="bi bi-pencil"></i> Editar Perfil
+                                </a>
+                                <a href="{% url 'news:feed' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left"></i> Voltar ao Feed
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-activity"></i> Atividade Recente
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="text-muted mb-3">Últimos Comentários</h6>
+                    {% if user.comments.all %}
+                        {% for comment in user.comments.all|slice:":5" %}
+                        <div class="border-start border-3 border-primary ps-3 mb-3">
+                            <small class="text-muted">
+                                {{ comment.created_at|date:"d/m/Y H:i" }}
+                            </small>
+                            <p class="mb-1">{{ comment.content|truncatewords:20 }}</p>
+                            <small>
+                                em <a href="{% url 'news:detail' comment.news_post.slug %}">
+                                    {{ comment.news_post.title|truncatewords:8 }}
+                                </a>
+                            </small>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">Nenhum comentário ainda.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

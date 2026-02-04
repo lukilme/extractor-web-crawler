@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Fontes de Scraping - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Fontes de Scraping</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'scraper:dashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Fontes</li>
+                    </ol>
+                </nav>
+            </div>
+            <a href="{% url 'scraper:source_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nova Fonte
+            </a>
+        </div>
+        {% if sources_page %}
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 5%;">ID</th>
+                                <th style="width: 20%;">Nome</th>
+                                <th style="width: 25%;">URL</th>
+                                <th style="width: 10%;">Status</th>
+                                <th style="width: 10%;">Sucesso/Erros</th>
+                                <th style="width: 15%;">Última Execução</th>
+                                <th style="width: 15%;" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for source in sources_page %}
+                            <tr>
+                                <td>{{ source.id }}</td>
+                                <td>
+                                    <strong>{{ source.name }}</strong>
+                                    <br>
+                                    <small class="text-muted">Por {{ source.created_by.username }}</small>
+                                </td>
+                                <td>
+                                    <a href="{{ source.url }}" target="_blank" class="text-decoration-none">
+                                        {{ source.url|truncatechars:40 }}
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if source.status == 'active' %}
+                                    <span class="badge bg-success">Ativo</span>
+                                    {% elif source.status == 'inactive' %}
+                                    <span class="badge bg-secondary">Inativo</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Erro</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">{{ source.success_count }}</span>
+                                    /
+                                    <span class="badge bg-danger">{{ source.error_count }}</span>
+                                </td>
+                                <td>
+                                    {% if source.last_scraped_at %}
+                                    <small>{{ source.last_scraped_at|date:"d/m/Y H:i" }}</small>
+                                    {% else %}
+                                    <small class="text-muted">Nunca</small>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="{% url 'scraper:run_scraping' source.id %}" 
+                                           class="btn btn-success"
+                                           onclick="return confirm('Executar scraping desta fonte?')"
+                                           title="Executar Scraping">
+                                            <i class="bi bi-play-circle"></i>
+                                        </a>
+                                        <a href="{% url 'scraper:source_edit' source.id %}" 
+                                           class="btn btn-primary"
+                                           title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="{% url 'scraper:source_delete' source.id %}" 
+                                           class="btn btn-danger"
+                                           onclick="return confirm('Tem certeza que deseja excluir esta fonte?')"
+                                           title="Excluir">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% if sources_page.has_other_pages %}
+            <div class="card-footer bg-white">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if sources_page.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ sources_page.previous_page_number }}">Anterior</a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in sources_page.paginator.page_range %}
+                            {% if sources_page.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                            {% elif num > sources_page.number|add:'-3' and num < sources_page.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if sources_page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ sources_page.next_page_number }}">Próximo</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+                <h4 class="mt-3">Nenhuma fonte cadastrada</h4>
+                <p class="text-muted">Comece adicionando uma nova fonte de scraping</p>
+                <a href="{% url 'scraper:source_create' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Adicionar Primeira Fonte
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

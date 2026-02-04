@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Editar Perfil - News Feed{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square"></i> Editar Perfil
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="text-center mb-4">
+                            {% if user.avatar %}
+                            <img id="avatar-preview" 
+                                 src="{{ user.avatar.url }}" 
+                                 alt="Avatar" 
+                                 class="rounded-circle border border-3 border-primary mb-3"
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                            {% else %}
+                            <div id="avatar-placeholder" 
+                                 class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center border border-3 border-white mb-3"
+                                 style="width: 150px; height: 150px;">
+                                <span class="text-white display-4 fw-bold">
+                                    {{ user.username|first|upper }}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.avatar.id_for_label }}" class="form-label">
+                                <i class="bi bi-image"></i> Avatar
+                            </label>
+                            {{ form.avatar }}
+                            {% if form.avatar.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.avatar.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Formatos aceitos: JPG, PNG (máx. 2MB)
+                            </small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                    <i class="bi bi-person"></i> Nome
+                                </label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.first_name.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                    <i class="bi bi-person"></i> Sobrenome
+                                </label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.last_name.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                <i class="bi bi-envelope"></i> Email
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.email.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.bio.id_for_label }}" class="form-label">
+                                <i class="bi bi-card-text"></i> Biografia
+                            </label>
+                            {{ form.bio }}
+                            {% if form.bio.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.bio.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Conte um pouco sobre você (máx. 500 caracteres)
+                            </small>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Salvar Alterações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-shield-lock"></i> Segurança
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">
+                        Gerencie a segurança da sua conta
+                    </p>
+                    <a href="{% url 'admin:password_change' %}" class="btn btn-outline-warning">
+                        <i class="bi bi-key"></i> Alterar Senha
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('{{ form.avatar.id_for_label }}').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('avatar-preview');
+            const placeholder = document.getElementById('avatar-placeholder');
+            
+            if (preview) {
+                preview.src = e.target.result;
+            } else if (placeholder) {
+                const img = document.createElement('img');
+                img.id = 'avatar-preview';
+                img.src = e.target.result;
+                img.className = 'rounded-circle border border-3 border-primary mb-3';
+                img.style.width = '150px';
+                img.style.height = '150px';
+                img.style.objectFit = 'cover';
+                placeholder.replaceWith(img);
+            }
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+{% endblock %}

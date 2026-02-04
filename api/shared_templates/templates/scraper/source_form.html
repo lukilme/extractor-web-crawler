@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{{ title }} - Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-plus-square"></i> {{ title }}
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="">
+                        {% csrf_token %}
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Dica:</strong> Use as ferramentas de desenvolvedor do navegador (F12) para
+                            inspecionar a página e encontrar os seletores CSS corretos.
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">
+                                <i class="bi bi-tag"></i> Nome da Fonte *
+                            </label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.name.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Ex: "Portal G1 - Tecnologia" ou "Blog Tech News"
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.url.id_for_label }}" class="form-label">
+                                <i class="bi bi-link-45deg"></i> URL da Página *
+                            </label>
+                            {{ form.url }}
+                            {% if form.url.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.url.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                URL completa de uma notícia de exemplo
+                            </small>
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ form.manual_mode }}
+                            <label class="form-check-label">
+                                Adicionar conteúdo manualmente (sem scraping)
+                            </label>
+                        </div>
+
+                        <div id="manual-fields" class="border rounded p-3 mb-4 d-none">
+                            <div class="mb-3">
+                                <label class="form-label">Título manual</label>
+                                {{ form.manual_title }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Conteúdo manual</label>
+                                {{ form.manual_content }}
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <h5 class="mb-3">Seletores CSS</h5>
+
+                        <div class="mb-3">
+                            <label for="{{ form.title_selector.id_for_label }}" class="form-label">
+                                <i class="bi bi-fonts"></i> Seletor do Título *
+                            </label>
+                            {{ form.title_selector }}
+                            {% if form.title_selector.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.title_selector.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Ex: <code>h1.article-title</code>, <code>.post-title</code>, <code>#main-heading</code>
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.content_selector.id_for_label }}" class="form-label">
+                                <i class="bi bi-text-paragraph"></i> Seletor do Conteúdo *
+                            </label>
+                            {{ form.content_selector }}
+                            {% if form.content_selector.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.content_selector.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Ex: <code>div.article-content</code>, <code>.post-body</code>,
+                                <code>article .content</code>
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.image_selector.id_for_label }}" class="form-label">
+                                <i class="bi bi-image"></i> Seletor da Imagem (Opcional)
+                            </label>
+                            {{ form.image_selector }}
+                            {% if form.image_selector.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.image_selector.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="text-muted d-block mt-1">
+                                Ex: <code>img.featured-image</code>, <code>.post-thumbnail img</code>
+                            </small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.status.id_for_label }}" class="form-label">
+                                <i class="bi bi-toggle-on"></i> Status *
+                            </label>
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.status.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'scraper:sources_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Salvar Fonte
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="card mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-question-circle"></i> Como encontrar seletores CSS?
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li class="mb-2">
+                            Abra a página da notícia no navegador
+                        </li>
+                        <li class="mb-2">
+                            Pressione <kbd>F12</kbd> ou clique com botão direito → Inspecionar
+                        </li>
+                        <li class="mb-2">
+                            Clique no ícone de seleção
+                            <i class="bi bi-cursor"></i> e passe sobre o elemento desejado
+                        </li>
+                        <li class="mb-2">
+                            No código HTML destacado, procure por:
+                            <ul class="mt-2">
+                                <li><code>class="nome-da-classe"</code> → use <code>.nome-da-classe</code></li>
+                                <li><code>id="identificador"</code> → use <code>#identificador</code></li>
+                                <li>Tag HTML → use diretamente: <code>h1</code>, <code>article</code>, etc</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Combine quando necessário: <code>article .content p</code>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkbox = document.getElementById('id_manual_mode');
+        const manualFields = document.getElementById('manual-fields');
+
+        function toggleManual() {
+            manualFields.classList.toggle('d-none', !checkbox.checked);
+        }
+
+        checkbox.addEventListener('change', toggleManual);
+        toggleManual();
+    });
+</script>
+
+{% endblock %}

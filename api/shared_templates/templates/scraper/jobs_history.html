@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Histórico de Execuções - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Histórico de Execuções</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'scraper:dashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Histórico</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Filtrar por Status</label>
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">Todos</option>
+                            <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Concluído</option>
+                            <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>Falhou</option>
+                            <option value="running" {% if status_filter == 'running' %}selected{% endif %}>Executando</option>
+                            <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pendente</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if jobs_page %}
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 5%;">ID</th>
+                                <th style="width: 25%;">Fonte</th>
+                                <th style="width: 10%;">Status</th>
+                                <th style="width: 15%;">Iniciado por</th>
+                                <th style="width: 10%;">Itens</th>
+                                <th style="width: 15%;">Data Início</th>
+                                <th style="width: 15%;">Data Fim</th>
+                                <th style="width: 5%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs_page %}
+                            <tr>
+                                <td>{{ job.id }}</td>
+                                <td>
+                                    <strong>{{ job.source.name }}</strong>
+                                </td>
+                                <td>
+                                    {% if job.status == 'completed' %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i> Concluído
+                                    </span>
+                                    {% elif job.status == 'failed' %}
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-x-circle"></i> Falhou
+                                    </span>
+                                    {% elif job.status == 'running' %}
+                                    <span class="badge bg-primary">
+                                        <i class="bi bi-arrow-repeat"></i> Executando
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-clock"></i> {{ job.get_status_display }}
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ job.started_by.username }}</td>
+                                <td>
+                                    <span class="badge bg-info">{{ job.items_scraped }}</span> coletados
+                                    <br>
+                                    <span class="badge bg-success">{{ job.items_published }}</span> publicados
+                                </td>
+                                <td>
+                                    <small>{{ job.created_at|date:"d/m/Y H:i:s" }}</small>
+                                </td>
+                                <td>
+                                    {% if job.completed_at %}
+                                    <small>{{ job.completed_at|date:"d/m/Y H:i:s" }}</small>
+                                    {% else %}
+                                    <small class="text-muted">-</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if job.error_message %}
+                                    <button type="button" 
+                                            class="btn btn-sm btn-outline-danger" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#errorModal{{ job.id }}">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                    </button>
+
+                                    <div class="modal fade" id="errorModal{{ job.id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title">
+                                                        <i class="bi bi-exclamation-triangle"></i> Erro no Job #{{ job.id }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Fonte:</strong> {{ job.source.name }}</p>
+                                                    <p><strong>Mensagem de Erro:</strong></p>
+                                                    <pre class="bg-light p-3 rounded">{{ job.error_message }}</pre>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if jobs_page.has_other_pages %}
+            <div class="card-footer bg-white">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if jobs_page.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ jobs_page.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}">
+                                Anterior
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in jobs_page.paginator.page_range %}
+                            {% if jobs_page.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                            {% elif num > jobs_page.number|add:'-3' and num < jobs_page.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if jobs_page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ jobs_page.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}">
+                                Próximo
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-clock-history text-muted" style="font-size: 4rem;"></i>
+                <h4 class="mt-3">Nenhuma execução registrada</h4>
+                <p class="text-muted">Execute um scraping para ver o histórico aqui</p>
+                <a href="{% url 'scraper:sources_list' %}" class="btn btn-primary">
+                    <i class="bi bi-play-circle"></i> Ir para Fontes
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

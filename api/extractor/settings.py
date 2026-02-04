@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     "default",
     "code_view",
     "post",
-    'news_collected'
+    'news_collected',
+    'widget_tweaks'
    
 ]
 

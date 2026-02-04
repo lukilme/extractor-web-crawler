@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Feed de Notícias{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" action="">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" 
+                                   placeholder="Buscar notícias..." 
+                                   value="{{ search_query }}">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if news_page %}
+                {% for news in news_page %}
+                <article class="card news-card mb-4">
+                    {% if news.image %}
+                    <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">
+                                <i class="bi bi-person"></i> {{ news.author.username }}
+                            </small>
+                            <span class="badge badge-{{ news.source_type }}">
+                                {{ news.get_source_type_display }}
+                            </span>
+                        </div>
+                        
+                        <h2 class="card-title h4">
+                            <a href="{% url 'news:detail' news.slug %}" class="text-decoration-none text-dark">
+                                {{ news.title }}
+                            </a>
+                        </h2>
+                        
+                        <p class="card-text text-muted">
+                            {{ news.summary|truncatewords:30 }}
+                        </p>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-clock"></i> {{ news.published_at|date:"d/m/Y H:i" }}
+                                <i class="bi bi-eye ms-3"></i> {{ news.views_count }} visualizações
+                                <i class="bi bi-chat-dots ms-3"></i> {{ news.comments_count }} comentários
+                            </div>
+                            <a href="{% url 'news:detail' news.slug %}" class="btn btn-sm btn-outline-primary">
+                                Ler mais <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+
+                {% if news_page.has_other_pages %}
+                <nav aria-label="Navegação de páginas">
+                    <ul class="pagination justify-content-center">
+                        {% if news_page.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ news_page.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                                Anterior
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for num in news_page.paginator.page_range %}
+                            {% if news_page.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                            {% elif num > news_page.number|add:'-3' and num < news_page.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if news_page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ news_page.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                                Próximo
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Nenhuma notícia encontrada.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

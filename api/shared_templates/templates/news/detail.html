@@ -1,0 +1,172 @@
+<!-- templates/news/detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ news.title }} - News Feed{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'news:feed' %}">Feed</a></li>
+                    <li class="breadcrumb-item active">{{ news.title|truncatewords:5 }}</li>
+                </ol>
+            </nav>
+
+            <article class="card mb-4">
+                {% if news.image %}
+                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}" style="max-height: 400px; object-fit: cover;">
+                {% endif %}
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="badge badge-{{ news.source_type }} me-2">
+                                {{ news.get_source_type_display }}
+                            </span>
+                            {% if news.status == 'published' %}
+                            <span class="badge bg-success">Publicado</span>
+                            {% endif %}
+                        </div>
+                        <small class="text-muted">
+                            <i class="bi bi-eye"></i> {{ news.views_count }} visualizações
+                        </small>
+                    </div>
+
+                    <h1 class="card-title mb-3">{{ news.title }}</h1>
+
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                        <div class="me-3">
+                            {% if news.author.avatar %}
+                            <img src="{{ news.author.avatar.url }}" alt="{{ news.author.username }}" 
+                                 class="rounded-circle" width="48" height="48" style="object-fit: cover;">
+                            {% else %}
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+                                 style="width: 48px; height: 48px;">
+                                <span class="text-white fw-bold">{{ news.author.username|first|upper }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <div class="fw-bold">{{ news.author.get_full_name|default:news.author.username }}</div>
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> {{ news.published_at|date:"d/m/Y H:i" }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="news-content mb-4" style="font-size: 1.1rem; line-height: 1.8;">
+                        {{ news.content|linebreaks }}
+                    </div>
+
+                    {% if news.source_url %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-link-45deg"></i> 
+                        <strong>Fonte original:</strong> 
+                        <a href="{{ news.source_url }}" target="_blank" rel="noopener">
+                            {{ news.source_url }}
+                            <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% if user.is_admin_user %}
+                    <div class="d-flex gap-2 mt-4 pt-3 border-top">
+                        <a href="{% url 'scraper:news_edit' news.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a href="{% url 'scraper:news_delete' news.id %}" 
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Tem certeza que deseja excluir esta notícia?')">
+                            <i class="bi bi-trash"></i> Excluir
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </article>
+
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-chat-dots"></i> 
+                        Comentários ({{ comments.count }})
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="mb-3">Deixe seu comentário</h5>
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                {{ form.content }}
+                                {% if form.content.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.content.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> Comentar
+                            </button>
+                        </form>
+                    </div>
+
+                    {% if comments %}
+                    <hr class="my-4">
+                    <h5 class="mb-4">Todos os comentários</h5>
+                    
+                    {% for comment in comments %}
+                    <div class="comment-box mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center">
+                                {% if comment.author.avatar %}
+                                <img src="{{ comment.author.avatar.url }}" 
+                                     alt="{{ comment.author.username }}" 
+                                     class="rounded-circle me-2" 
+                                     width="40" height="40"
+                                     style="object-fit: cover;">
+                                {% else %}
+                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-2" 
+                                     style="width: 40px; height: 40px;">
+                                    <span class="text-white fw-bold">{{ comment.author.username|first|upper }}</span>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <div class="fw-bold">{{ comment.author.username }}</div>
+                                    <small class="text-muted">
+                                        {{ comment.created_at|date:"d/m/Y H:i" }}
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            {% if user == comment.author or user.is_admin_user %}
+                            <a href="{% url 'news:delete_comment' comment.id %}" 
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Tem certeza que deseja excluir este comentário?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <p class="mb-0 ms-5">{{ comment.content }}</p>
+                    </div>
+                    {% endfor %}
+                    
+                    {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-chat-square-text" style="font-size: 3rem;"></i>
+                        <p class="mt-2">Seja o primeiro a comentar!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'news:feed' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar ao Feed
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

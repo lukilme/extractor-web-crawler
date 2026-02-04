@@ -1,8 +1,10 @@
 from django.urls import path
-from .views import feed, feed_api, feed_active
+from . import views
+
+app_name = 'news'
 
 urlpatterns = [
-    path("", feed, name="feed"),
-    path("api/", feed_api, name="feed_api"),
-    path("active/", feed_active, name="feed_active")
+    path('', views.feed_view, name='feed'),
+    path('news/<slug:slug>/', views.news_detail_view, name='detail'),
+    path('comment/<int:comment_id>/delete/', views.delete_comment_view, name='delete_comment'),
 ]

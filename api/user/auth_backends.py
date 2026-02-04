@@ -5,7 +5,6 @@ User = get_user_model()
 
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, email=None, **kwargs):
-        # aceita email OU username
         login_value = email or username
 
         if not login_value or not password:
