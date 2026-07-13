@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, email=None, **kwargs):
         login_value = email or username

@@ -5,6 +5,7 @@ from django.http import JsonResponse, StreamingHttpResponse
 from user.forms import LoginForm, RegisterForm
 import requests
 
+
 def task_status(request):
     task_id = request.GET.get("task_id")
     if not task_id:
@@ -84,5 +85,5 @@ def homepage_view(request):
         {
             "form_login": form_login,
             "form_register": form_register,
-        }
+        },
     )

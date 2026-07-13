@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,45 +14,163 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ScraperSource',
+            name="ScraperSource",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='Nome da Fonte')),
-                ('url', models.URLField(verbose_name='URL')),
-                ('title_selector', models.CharField(help_text='Seletor CSS para título (ex: h1.title)', max_length=200, verbose_name='Seletor de Título')),
-                ('content_selector', models.CharField(help_text='Seletor CSS para conteúdo (ex: div.content)', max_length=200, verbose_name='Seletor de Conteúdo')),
-                ('image_selector', models.CharField(blank=True, help_text='Seletor CSS para imagem (ex: img.featured)', max_length=200, verbose_name='Seletor de Imagem')),
-                ('status', models.CharField(choices=[('active', 'Ativo'), ('inactive', 'Inativo'), ('error', 'Erro')], default='active', max_length=10, verbose_name='Status')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('last_scraped_at', models.DateTimeField(blank=True, null=True, verbose_name='Última execução')),
-                ('success_count', models.PositiveIntegerField(default=0, verbose_name='Execuções bem-sucedidas')),
-                ('error_count', models.PositiveIntegerField(default=0, verbose_name='Execuções com erro')),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scraper_sources', to=settings.AUTH_USER_MODEL, verbose_name='Criado por')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=200, verbose_name="Nome da Fonte"),
+                ),
+                ("url", models.URLField(verbose_name="URL")),
+                (
+                    "title_selector",
+                    models.CharField(
+                        help_text="Seletor CSS para título (ex: h1.title)",
+                        max_length=200,
+                        verbose_name="Seletor de Título",
+                    ),
+                ),
+                (
+                    "content_selector",
+                    models.CharField(
+                        help_text="Seletor CSS para conteúdo (ex: div.content)",
+                        max_length=200,
+                        verbose_name="Seletor de Conteúdo",
+                    ),
+                ),
+                (
+                    "image_selector",
+                    models.CharField(
+                        blank=True,
+                        help_text="Seletor CSS para imagem (ex: img.featured)",
+                        max_length=200,
+                        verbose_name="Seletor de Imagem",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("active", "Ativo"),
+                            ("inactive", "Inativo"),
+                            ("error", "Erro"),
+                        ],
+                        default="active",
+                        max_length=10,
+                        verbose_name="Status",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "last_scraped_at",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Última execução"
+                    ),
+                ),
+                (
+                    "success_count",
+                    models.PositiveIntegerField(
+                        default=0, verbose_name="Execuções bem-sucedidas"
+                    ),
+                ),
+                (
+                    "error_count",
+                    models.PositiveIntegerField(
+                        default=0, verbose_name="Execuções com erro"
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="scraper_sources",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Criado por",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Fonte de Scraping',
-                'verbose_name_plural': 'Fontes de Scraping',
-                'ordering': ['-created_at'],
+                "verbose_name": "Fonte de Scraping",
+                "verbose_name_plural": "Fontes de Scraping",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='ScraperJob',
+            name="ScraperJob",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('pending', 'Pendente'), ('running', 'Executando'), ('completed', 'Concluído'), ('failed', 'Falhou')], default='pending', max_length=10, verbose_name='Status')),
-                ('items_scraped', models.PositiveIntegerField(default=0, verbose_name='Itens coletados')),
-                ('items_published', models.PositiveIntegerField(default=0, verbose_name='Itens publicados')),
-                ('error_message', models.TextField(blank=True, verbose_name='Mensagem de erro')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('completed_at', models.DateTimeField(blank=True, null=True)),
-                ('started_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scraper_jobs', to=settings.AUTH_USER_MODEL, verbose_name='Iniciado por')),
-                ('source', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='jobs', to='scrapper.scrapersource', verbose_name='Fonte')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "Pendente"),
+                            ("running", "Executando"),
+                            ("completed", "Concluído"),
+                            ("failed", "Falhou"),
+                        ],
+                        default="pending",
+                        max_length=10,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "items_scraped",
+                    models.PositiveIntegerField(
+                        default=0, verbose_name="Itens coletados"
+                    ),
+                ),
+                (
+                    "items_published",
+                    models.PositiveIntegerField(
+                        default=0, verbose_name="Itens publicados"
+                    ),
+                ),
+                (
+                    "error_message",
+                    models.TextField(blank=True, verbose_name="Mensagem de erro"),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("completed_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "started_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="scraper_jobs",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Iniciado por",
+                    ),
+                ),
+                (
+                    "source",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="jobs",
+                        to="scrapper.scrapersource",
+                        verbose_name="Fonte",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Execução de Scraping',
-                'verbose_name_plural': 'Execuções de Scraping',
-                'ordering': ['-created_at'],
+                "verbose_name": "Execução de Scraping",
+                "verbose_name_plural": "Execuções de Scraping",
+                "ordering": ["-created_at"],
             },
         ),
     ]

@@ -5,18 +5,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('code_view', '0001_initial'),
-        ('news_collected', '0001_initial'),
+        ("code_view", "0001_initial"),
+        ("news_collected", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collectionscript',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='news_collected.category'),
+            model_name="collectionscript",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="news_collected.category",
+            ),
         ),
     ]

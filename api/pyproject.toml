@@ -8,7 +8,9 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "celery[redis] (>=5.3,<6.0)"
+    "celery[redis] (>=5.3,<6.0)",
+    "django-widget-tweaks (>=1.5.1,<2.0.0)",
+    "ruff (>=0.15.21,<0.16.0)"
 
 ]
 

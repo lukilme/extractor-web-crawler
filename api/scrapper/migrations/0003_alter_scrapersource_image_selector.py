@@ -4,15 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('scrapper', '0002_alter_scrapersource_content_selector_and_more'),
+        ("scrapper", "0002_alter_scrapersource_content_selector_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='scrapersource',
-            name='image_selector',
-            field=models.CharField(blank=True, help_text='Seletor CSS para imagem (ex: img.featured)', max_length=200, null=True, verbose_name='Seletor de Imagem'),
+            model_name="scrapersource",
+            name="image_selector",
+            field=models.CharField(
+                blank=True,
+                help_text="Seletor CSS para imagem (ex: img.featured)",
+                max_length=200,
+                null=True,
+                verbose_name="Seletor de Imagem",
+            ),
         ),
     ]

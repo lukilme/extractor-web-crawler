@@ -19,9 +19,9 @@ class NewsPostViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
 
     def get_queryset(self):
-        qs = NewsPost.objects.select_related('author').prefetch_related('comments')
-        if self.action == 'list':
-            return qs.filter(status='published')
+        qs = NewsPost.objects.select_related("author").prefetch_related("comments")
+        if self.action == "list":
+            return qs.filter(status="published")
         return qs
 
     def perform_create(self, serializer):
@@ -32,10 +32,12 @@ class NewsPostViewSet(viewsets.ModelViewSet):
         increment_news_views(instance)
         return super().retrieve(request, *args, **kwargs)
 
-    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    @action(
+        detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated]
+    )
     def publish(self, request, pk=None):
         publish_news(self.get_object())
-        return Response({'status': 'publicado'})
+        return Response({"status": "publicado"})
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -44,9 +46,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Comment.objects.filter(
-            is_active=True,
-            news_post__status='published'
-        ).select_related('author', 'news_post')
+            is_active=True, news_post__status="published"
+        ).select_related("author", "news_post")
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

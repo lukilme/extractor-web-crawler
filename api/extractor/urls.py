@@ -21,11 +21,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('user.urls')),
-    path('', include('post.urls')),
-    path('scraper/', include('scrapper.urls')),
-    path('api/', include('post.api.urls')),     # API
+    path("admin/", admin.site.urls),
+    path("accounts/", include("user.urls")),
+    path("", include("post.urls")),
+    path("scraper/", include("scrapper.urls")),
+    path("api/", include("post.api.urls")),  # API
 ]
 
 if settings.DEBUG:

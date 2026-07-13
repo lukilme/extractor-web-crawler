@@ -6,18 +6,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('code_view', '0002_initial'),
+        ("code_view", "0002_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='collectionscript',
-            name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='collection_scripts', to=settings.AUTH_USER_MODEL),
+            model_name="collectionscript",
+            name="owner",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="collection_scripts",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

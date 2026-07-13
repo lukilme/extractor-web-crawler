@@ -4,50 +4,64 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('user', '0002_user_name'),
+        ("user", "0002_user_name"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='user',
-            options={'ordering': ['-date_joined'], 'verbose_name': 'Usuário', 'verbose_name_plural': 'Usuários'},
+            name="user",
+            options={
+                "ordering": ["-date_joined"],
+                "verbose_name": "Usuário",
+                "verbose_name_plural": "Usuários",
+            },
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='file_path',
+            model_name="user",
+            name="file_path",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='is_administrator',
+            model_name="user",
+            name="is_administrator",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='name',
+            model_name="user",
+            name="name",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='password_hash',
+            model_name="user",
+            name="password_hash",
         ),
         migrations.AddField(
-            model_name='user',
-            name='avatar',
-            field=models.ImageField(blank=True, null=True, upload_to='avatars/', verbose_name='Avatar'),
+            model_name="user",
+            name="avatar",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="avatars/", verbose_name="Avatar"
+            ),
         ),
         migrations.AddField(
-            model_name='user',
-            name='bio',
-            field=models.TextField(blank=True, max_length=500, verbose_name='Biografia'),
+            model_name="user",
+            name="bio",
+            field=models.TextField(
+                blank=True, max_length=500, verbose_name="Biografia"
+            ),
         ),
         migrations.AddField(
-            model_name='user',
-            name='user_type',
-            field=models.CharField(choices=[('comum', 'Usuário Comum'), ('admin', 'Administrador')], default='comum', max_length=10, verbose_name='Tipo de Usuário'),
+            model_name="user",
+            name="user_type",
+            field=models.CharField(
+                choices=[("comum", "Usuário Comum"), ("admin", "Administrador")],
+                default="comum",
+                max_length=10,
+                verbose_name="Tipo de Usuário",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='email',
-            field=models.EmailField(blank=True, max_length=254, verbose_name='email address'),
+            model_name="user",
+            name="email",
+            field=models.EmailField(
+                blank=True, max_length=254, verbose_name="email address"
+            ),
         ),
     ]
